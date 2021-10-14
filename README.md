@@ -19,5 +19,5 @@ uvicorn app.main:app --reload
 docker build -t ogyh-backend .
 
 # Start the container
-docker run -d -p 80:80 ogyh-backend
+docker run -d -p 80:80 --name ogyh-backend -v $(pwd):/usr/ogyh-backend ogyh-backend
 ```
