@@ -1,25 +1,14 @@
 import requests
 from functools import reduce
 
-URL = ""
-DATA = [
-    {"site_name": "1", "name": "nice"},
-    {"site_name": "1", "name": "kaopun"},
-    {"site_name": "2", "name": "kuea"},
-    {"site_name": "2", "name": "tae"},
-    {"site_name": "3", "name": "ice"},
-    {"site_name": "2", "name": "beam"},
-    {"site_name": "2", "name": "korn"},
-    {"site_name": "3", "name": "thorn"},
-]
 
+def fetch_reservation(URL):
+    r = requests.get(URL)
+    DATA = r.json()
+    return DATA
 
-def get_reservation():
-    # r = requests.get(URL)
-    # get_data = r.json()
-
+def get_reservation(DATA):
     reservations = {}
-
     for item in DATA:
         site_name_key = item['site_name']
         if site_name_key in reservations:
