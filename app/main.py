@@ -3,7 +3,6 @@ from fastapi import FastAPI, Request
 
 from .paginator import Paginator
 from .utils import get_reservation, fetch_reservation
-import math
 
 app = FastAPI()
 
