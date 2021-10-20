@@ -1,11 +1,11 @@
 import requests
-from functools import reduce
 
 
 def fetch_reservation(URL):
     r = requests.get(URL)
     DATA = r.json()
     return DATA
+
 
 def get_reservation(DATA):
     reservations = {}
