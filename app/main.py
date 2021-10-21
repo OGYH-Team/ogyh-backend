@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 
 from .paginator import Paginator
 from .utils import get_reservation, fetch_reservation
@@ -9,16 +9,18 @@ app = FastAPI()
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"msg": "Hello from OGYH"}
 
 
 @app.get("/reservations")
 def read_users_reservations(
+    request: Request,
     site_name: Optional[str] = "",
     limit: Optional[int] = None,
     page: Optional[int] = 1
 ):
-    user_data = fetch_reservation(URL="http://localhost/sample-data")
+    user_data = fetch_reservation(
+        URL=request.url_for('sample_reservation_data'))
     user_data_by_site_name = get_reservation(user_data["data"])
     user_at_site = []
     site_names = user_data_by_site_name.keys()
