@@ -2,7 +2,7 @@ from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
 
 from .paginator import Paginator
-from .utils import get_reservation, fetch_reservation
+from .utils import get_reservation, fetch_reservation, get_cancellation
 
 app = FastAPI()
 
@@ -19,7 +19,15 @@ def read_users_reservations(
     limit: Optional[int] = None,
     page: Optional[int] = 1
 ):
-    """Get reservation information to query as parameter."""  
+    """
+        Show users vaccination reservations information:
+
+        - **request**:
+        - **site_name** the vaccination site that provided vaccine to the user
+        - **limit** : number of users to be shown as a result
+        - **page** : number of pages to be shown as a result
+    
+    """  
     user_data = fetch_reservation(
         URL=request.url_for('sample_reservation_data'))
     user_data_by_site_name = get_reservation(user_data["data"])
@@ -60,3 +68,31 @@ def sample_reservation_data():
         {"citizen_id": 1234378880133, "site_name": "site-3", "name": "thorn"},
     ]
     return {"data": DATA}
+
+
+@app.get("/cancellation")
+def users_cancellation(
+    request: Request,
+    citizen_id: Optional[int] = None,
+):
+    """
+        Cancelled user vaccination information according to their citizen_id:
+
+        - **request**: request from url
+        - **citizen_id**: each cancellation must have a citizen_id 
+    """
+    user_data = fetch_reservation(
+        URL=request.url_for('sample_reservation_data'))
+    user_cancellation_data = get_cancellation(get_reservation(user_data["data"]), citizen_id)
+
+    if not citizen_id:
+        raise HTTPException(status_code=404, detail="citizen id not provided")
+    if not user_cancellation_data:
+        raise HTTPException(status_code=404, detail="citizen id not found")
+
+    return {
+        "response": {
+            "citizen_id": citizen_id,
+            "site_name": user_cancellation_data['site_name'],
+        }
+    }

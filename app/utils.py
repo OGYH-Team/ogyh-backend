@@ -23,13 +23,11 @@ def get_reservation(DATA):
 
 
 def get_cancellation(DATA, citizen_id):
-    cancellation = {}
     for item in DATA.values():
         for user in item:
-            # print(user)
             cancel_id = user['citizen_id']
             if cancel_id == citizen_id:
                 user['queue'] = ""
-            return user
-    return 0
+                return user
+    return None
 
