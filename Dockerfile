@@ -8,6 +8,6 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
-EXPOSE 80
+EXPOSE ${PORT:-5000}
 
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "80", "--reload"]
+CMD uvicorn app.main:app --host=0.0.0.0 --port=${PORT:-5000}
