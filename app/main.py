@@ -19,6 +19,7 @@ def read_users_reservations(
     limit: Optional[int] = None,
     page: Optional[int] = 1
 ):
+    """Get reservation information to query as parameter."""
     user_data = fetch_reservation(
         URL=request.url_for('sample_reservation_data'))
     user_data_by_site_name = get_reservation(user_data["data"])

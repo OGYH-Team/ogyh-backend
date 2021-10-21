@@ -2,12 +2,14 @@ import requests
 
 
 def fetch_reservation(URL):
+    """Get reservation URL."""
     r = requests.get(URL)
     DATA = r.json()
     return DATA
 
 
 def get_reservation(DATA):
+    """Arrange json format into dict."""
     reservations = {}
     for item in DATA:
         site_name_key = item['site_name']
