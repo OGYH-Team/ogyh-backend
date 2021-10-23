@@ -34,33 +34,57 @@ def read_root():
 
 @app.get("/reservations", tags=["reservation"])
 def read_users_reservations(
-    request: Request,
-    site_name: Optional[str] = "",
     limit: Optional[int] = None,
     page: Optional[int] = 1
 ):
     """
         Show users vaccination reservations information:
 
-        - **request**: a starlatte Request object
-        - **site_name** the vaccination site that provided vaccine to the user
         - **limit** : number of users to be shown as a result
         - **page** : number of pages to be shown as a result
 
         currently we user our sample reservation data as a user's reservation data 
     """
-    user_data = fetch_url(
-        URL=request.url_for('sample_reservation_data'))
-    user_data_by_site_name = arranging_reservation_by_site_name(user_data["data"])
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
+
+    user_at_site = []
+    site_names = user_data_by_site_name.keys()
+    for site_name in site_names:
+        user_at_site += user_data_by_site_name[site_name]
+    user_paginator = Paginator(user_at_site)
+    user_paginator.paginate(page=page, limit=limit)
+
+    return {
+        "response": {
+            "users_page_data": user_paginator.get_page_data(),
+            "users": user_paginator.get_items()
+        }
+    }
+
+
+@app.get("/reservations/{site_name}", tags=["reservation"])
+def read_users_reservations_by_site_name(
+    site_name: str,
+    limit: Optional[int] = None,
+    page: Optional[int] = 1
+):
+    """
+        Show users vaccination reservations information:
+
+        - **site_name** : the vaccination site that provided vaccine to the user
+        - **limit** : number of users to be shown as a result
+        - **page** : number of pages to be shown as a result
+
+    """
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
+
     user_at_site = []
     site_names = user_data_by_site_name.keys()
 
-    if site_name == "":
-        site_name = "every sites"
-        for user in user_data_by_site_name.values():
-            user_at_site += user
-    elif site_name not in site_names:
-        raise HTTPException(status_code=404, detail="invalid site name")
+    if site_name not in site_names:
+        raise HTTPException(status_code=404, detail="site name is not found")
     else:
         user_at_site = user_data_by_site_name[site_name]
 
@@ -76,7 +100,7 @@ def read_users_reservations(
     }
 
 
-@app.delete("/cancellation", tags=["reservation"])
+@app.delete("/reservation", tags=["reservation"])
 def users_cancellation(
     request: Request,
     citizen_id: Optional[int] = None,
@@ -87,7 +111,6 @@ def users_cancellation(
         - **request**: a starlatte Request object
         - **citizen_id**: each cancellation must have a citizen_id
 
-        currently we user our sample reservation data as a user's reservation data 
     """
     user_data = fetch_url(
         URL=request.url_for('sample_reservation_data'))
