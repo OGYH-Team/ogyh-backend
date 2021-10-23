@@ -1,36 +1,90 @@
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
 
-from .paginator import Paginator
-from .utils import get_reservation, fetch_reservation
-
-app = FastAPI()
+from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_cancellation
+from app.utils.paginator import Paginator
 
 
-@app.get("/")
+description = """
+Service Site API provides a vaccination queue for each user reservation
+"""
+tags_metadata = [
+    {
+        "name": "reservation",
+        "description": "Users reservation data and rules come from WCG group ",
+        "externalDocs": {
+            "description": "docs",
+            "url": "https://wcg-apis.herokuapp.com/reservation_usage",
+        }
+    }
+]
+
+app = FastAPI(
+    title="Service Site OGYH",
+    description=description,
+    version="0.1",
+    openapi_tags=tags_metadata,
+)
+
+
+@app.get("/", include_in_schema=False)
 def read_root():
     return {"msg": "Hello from OGYH"}
 
 
-@app.get("/reservations")
+@app.get("/reservations", tags=["reservation"])
 def read_users_reservations(
-    request: Request,
-    site_name: Optional[str] = "",
     limit: Optional[int] = None,
     page: Optional[int] = 1
 ):
-    user_data = fetch_reservation(
-        URL=request.url_for('sample_reservation_data'))
-    user_data_by_site_name = get_reservation(user_data["data"])
+    """
+        Show users vaccination reservations information:
+
+        - **limit** : number of users to be shown as a result
+        - **page** : number of pages to be shown as a result
+
+        currently we user our sample reservation data as a user's reservation data 
+    """
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
+
+    user_at_site = []
+    site_names = user_data_by_site_name.keys()
+    for site_name in site_names:
+        user_at_site += user_data_by_site_name[site_name]
+    user_paginator = Paginator(user_at_site)
+    user_paginator.paginate(page=page, limit=limit)
+
+    return {
+        "response": {
+            "users_page_data": user_paginator.get_page_data(),
+            "users": user_paginator.get_items()
+        }
+    }
+
+
+@app.get("/reservations/{site_name}", tags=["reservation"])
+def read_users_reservations_by_site_name(
+    site_name: str,
+    limit: Optional[int] = None,
+    page: Optional[int] = 1
+):
+    """
+        Show users vaccination reservations information according to site name:
+
+        - **site_name** : the vaccination site that provided vaccine to the user
+        - **limit** : number of users to be shown as a result
+        - **page** : number of pages to be shown as a result
+
+    """
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
+
     user_at_site = []
     site_names = user_data_by_site_name.keys()
 
-    if site_name == "":
-        site_name = "every sites"
-        for user in user_data_by_site_name.values():
-            user_at_site += user
-    elif site_name not in site_names:
-        raise HTTPException(status_code=404, detail="invalid site name")
+    if site_name not in site_names:
+        raise HTTPException(status_code=404, detail="site name is not found")
     else:
         user_at_site = user_data_by_site_name[site_name]
 
@@ -46,7 +100,37 @@ def read_users_reservations(
     }
 
 
-@app.get("/sample-data")
+@app.delete("/reservation", tags=["reservation"])
+def users_cancellation(
+    request: Request,
+    citizen_id: Optional[int] = None,
+):
+    """
+        Cancelled user vaccination information according to their citizen_id:
+
+        - **request**: a starlatte Request object
+        - **citizen_id**: each cancellation must have a citizen_id
+
+    """
+    user_data = fetch_url(
+        URL=request.url_for('sample_reservation_data'))
+    user_cancellation_data = get_cancellation(
+        arranging_reservation_by_site_name(user_data["data"]), citizen_id)
+
+    if not citizen_id:
+        raise HTTPException(status_code=404, detail="citizen id not provided")
+    if not user_cancellation_data:
+        raise HTTPException(status_code=404, detail="citizen id not found")
+
+    return {
+        "response": {
+            "citizen_id": citizen_id,
+            "site_name": user_cancellation_data['site_name'],
+        }
+    }
+
+
+@app.get("/sample-data", include_in_schema=False)
 def sample_reservation_data():
     DATA = [
         {"citizen_id": 1253567840123, "site_name": "site 1", "name": "nice"},
