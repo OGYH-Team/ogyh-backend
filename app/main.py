@@ -70,7 +70,7 @@ def read_users_reservations_by_site_name(
     page: Optional[int] = 1
 ):
     """
-        Show users vaccination reservations information:
+        Show users vaccination reservations information according to site name:
 
         - **site_name** : the vaccination site that provided vaccine to the user
         - **limit** : number of users to be shown as a result
