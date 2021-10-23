@@ -42,8 +42,6 @@ def read_users_reservations(
 
         - **limit** : number of users to be shown as a result
         - **page** : number of pages to be shown as a result
-
-        currently we user our sample reservation data as a user's reservation data 
     """
     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
@@ -108,7 +106,6 @@ def users_cancellation(
     """
         Cancelled user vaccination information according to their citizen_id:
 
-        - **request**: a starlatte Request object
         - **citizen_id**: each cancellation must have a citizen_id
 
     """
