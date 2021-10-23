@@ -1,8 +1,9 @@
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
 
-from .paginator import Paginator
-from .utils import get_reservation, fetch_reservation, get_cancellation
+from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_cancellation
+from app.utils.paginator import Paginator
+
 
 description = """
 Service Site API provides a vaccination queue for each user reservation
@@ -11,7 +12,7 @@ tags_metadata = [
     {
         "name": "reservation",
         "description": "Users reservation data and rules come from WCG group ",
-        "externalDocs":{
+        "externalDocs": {
             "description": "docs",
             "url": "https://wcg-apis.herokuapp.com/reservation_usage",
         }
@@ -48,9 +49,9 @@ def read_users_reservations(
 
         currently we user our sample reservation data as a user's reservation data 
     """
-    user_data = fetch_reservation(
+    user_data = fetch_url(
         URL=request.url_for('sample_reservation_data'))
-    user_data_by_site_name = get_reservation(user_data["data"])
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data["data"])
     user_at_site = []
     site_names = user_data_by_site_name.keys()
 
@@ -88,10 +89,10 @@ def users_cancellation(
 
         currently we user our sample reservation data as a user's reservation data 
     """
-    user_data = fetch_reservation(
+    user_data = fetch_url(
         URL=request.url_for('sample_reservation_data'))
     user_cancellation_data = get_cancellation(
-        get_reservation(user_data["data"]), citizen_id)
+        arranging_reservation_by_site_name(user_data["data"]), citizen_id)
 
     if not citizen_id:
         raise HTTPException(status_code=404, detail="citizen id not provided")

@@ -1,15 +1,15 @@
 import requests
 
 
-def fetch_reservation(URL):
-    """Get reservation URL."""
+def fetch_url(URL):
+    """Return a data that fetch from given url."""
     r = requests.get(URL)
     DATA = r.json()
     return DATA
 
 
-def get_reservation(DATA):
-    """Arrange json format into dict."""
+def arranging_reservation_by_site_name(DATA):
+    """Return reservation data that arranging by site name"""
     reservations = {}
     for item in DATA:
         site_name_key = item['site_name']
@@ -21,8 +21,8 @@ def get_reservation(DATA):
     return reservations
 
 
-
 def get_cancellation(DATA, citizen_id):
+    """Return the user if the citizen id is existed, otherwise return None."""
     for item in DATA.values():
         for user in item:
             cancel_id = user['citizen_id']
@@ -30,4 +30,3 @@ def get_cancellation(DATA, citizen_id):
                 user['queue'] = ""
                 return user
     return None
-
