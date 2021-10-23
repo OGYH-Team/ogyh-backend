@@ -4,15 +4,34 @@ from fastapi import FastAPI, HTTPException, Request
 from .paginator import Paginator
 from .utils import get_reservation, fetch_reservation, get_cancellation
 
-app = FastAPI()
+description = """
+Service Site API provides a vaccination queue for each user reservation
+"""
+tags_metadata = [
+    {
+        "name": "reservation",
+        "description": "Users reservation data and rules come from WCG group ",
+        "externalDocs":{
+            "description": "docs",
+            "url": "https://wcg-apis.herokuapp.com/reservation_usage",
+        }
+    }
+]
+
+app = FastAPI(
+    title="Service Site OGYH",
+    description=description,
+    version="0.1",
+    openapi_tags=tags_metadata,
+)
 
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 def read_root():
     return {"msg": "Hello from OGYH"}
 
 
-@app.get("/reservations")
+@app.get("/reservations", tags=["reservation"])
 def read_users_reservations(
     request: Request,
     site_name: Optional[str] = "",
@@ -22,12 +41,13 @@ def read_users_reservations(
     """
         Show users vaccination reservations information:
 
-        - **request**:
+        - **request**: a starlatte Request object
         - **site_name** the vaccination site that provided vaccine to the user
         - **limit** : number of users to be shown as a result
         - **page** : number of pages to be shown as a result
-    
-    """  
+
+        currently we user our sample reservation data as a user's reservation data 
+    """
     user_data = fetch_reservation(
         URL=request.url_for('sample_reservation_data'))
     user_data_by_site_name = get_reservation(user_data["data"])
@@ -55,22 +75,7 @@ def read_users_reservations(
     }
 
 
-@app.get("/sample-data")
-def sample_reservation_data():
-    DATA = [
-        {"citizen_id": 1253567840123, "site_name": "site 1", "name": "nice"},
-        {"citizen_id": 1234547890163, "site_name": "site 1", "name": "kaopun"},
-        {"citizen_id": 1434567890123, "site_name": "site2", "name": "kuea"},
-        {"citizen_id": 1234563890193, "site_name": "site2", "name": "tae"},
-        {"citizen_id": 1234565890103, "site_name": "site-3", "name": "ice"},
-        {"citizen_id": 1233547890183, "site_name": "site2", "name": "beam"},
-        {"citizen_id": 1234567790173, "site_name": "site2", "name": "korn"},
-        {"citizen_id": 1234378880133, "site_name": "site-3", "name": "thorn"},
-    ]
-    return {"data": DATA}
-
-
-@app.get("/cancellation")
+@app.delete("/cancellation", tags=["reservation"])
 def users_cancellation(
     request: Request,
     citizen_id: Optional[int] = None,
@@ -78,12 +83,15 @@ def users_cancellation(
     """
         Cancelled user vaccination information according to their citizen_id:
 
-        - **request**: request from url
-        - **citizen_id**: each cancellation must have a citizen_id 
+        - **request**: a starlatte Request object
+        - **citizen_id**: each cancellation must have a citizen_id
+
+        currently we user our sample reservation data as a user's reservation data 
     """
     user_data = fetch_reservation(
         URL=request.url_for('sample_reservation_data'))
-    user_cancellation_data = get_cancellation(get_reservation(user_data["data"]), citizen_id)
+    user_cancellation_data = get_cancellation(
+        get_reservation(user_data["data"]), citizen_id)
 
     if not citizen_id:
         raise HTTPException(status_code=404, detail="citizen id not provided")
@@ -96,3 +104,18 @@ def users_cancellation(
             "site_name": user_cancellation_data['site_name'],
         }
     }
+
+
+@app.get("/sample-data", include_in_schema=False)
+def sample_reservation_data():
+    DATA = [
+        {"citizen_id": 1253567840123, "site_name": "site 1", "name": "nice"},
+        {"citizen_id": 1234547890163, "site_name": "site 1", "name": "kaopun"},
+        {"citizen_id": 1434567890123, "site_name": "site2", "name": "kuea"},
+        {"citizen_id": 1234563890193, "site_name": "site2", "name": "tae"},
+        {"citizen_id": 1234565890103, "site_name": "site-3", "name": "ice"},
+        {"citizen_id": 1233547890183, "site_name": "site2", "name": "beam"},
+        {"citizen_id": 1234567790173, "site_name": "site2", "name": "korn"},
+        {"citizen_id": 1234378880133, "site_name": "site-3", "name": "thorn"},
+    ]
+    return {"data": DATA}
