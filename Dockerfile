@@ -1,6 +1,6 @@
 FROM python:3.7
 
-ENV MONGODB_URL=mongodb+srv://OGYH:CTFfzLP00Iz0AS22@cluster0.ejoux.mongodb.net/ogyhDatabase?retryWrites=true&w=majority
+ENV MONGODB_URL=${MONGODB_URL}
 
 WORKDIR /usr/ogyh-backend
 
