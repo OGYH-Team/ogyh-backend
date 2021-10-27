@@ -1,3 +1,6 @@
 uvicorn
 fastapi
 requests
+motor
+pymongo[srv]
+pydantic
