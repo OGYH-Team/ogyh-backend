@@ -19,5 +19,5 @@ uvicorn app.main:app --port=5000 --reload
 docker build -t ogyh-backend .
 
 # Start the container
-docker run -d -p 5000:5000 --name ogyh-backend -v $(pwd):/usr/ogyh-backend ogyh-backend
+docker run -d -p 5000:5000 --name ogyh-backend --env-file .env -v $(pwd):/usr/ogyh-backend ogyh-backend
 ```

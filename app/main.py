@@ -1,8 +1,12 @@
+import os
 from typing import Optional
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.encoders import jsonable_encoder
 
 from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_cancellation
 from app.utils.paginator import Paginator
+from app.database import db
+from app.models.site import Site
 
 
 description = """
@@ -28,8 +32,12 @@ app = FastAPI(
 
 
 @app.get("/", include_in_schema=False)
-def read_root():
-    return {"msg": "Hello from OGYH"}
+async def read_root():
+    queue = await db.queue.find_one()
+    all_sites = []
+    async for site in db.sites.find({}, {"_id": 0}):
+        all_sites.append(site)
+    return {"msg": queue["msg"], "sites": all_sites}
 
 
 @app.get("/reservations", tags=["reservation"])
