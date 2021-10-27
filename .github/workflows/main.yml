@@ -29,3 +29,5 @@ jobs:
           heroku_email: ${{secrets.HEROKU_EMAIL}}
           usedocker: true
           dontautocreate: true
+        env:
+          MONGODB_URL: ${{secrets.MONGODB_URL}}
