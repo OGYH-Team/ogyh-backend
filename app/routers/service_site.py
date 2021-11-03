@@ -3,14 +3,15 @@ from fastapi import APIRouter, HTTPException
 from typing import Optional
 
 from app.utils.paginator import Paginator
-from app.database import db
+from app.database import db, update_site
+from app.models.site import Site
 
 router = APIRouter(
     tags=["service site"]
 )
 
 
-@router.get("/sites")
+@router.get("/sites", response_model=Site, response_description="Service sites retrived")
 async def read_site_names(
     limit: Optional[int] = None,
     page: Optional[int] = 1
@@ -22,7 +23,6 @@ async def read_site_names(
         - **page** : number of pages to be shown as a result
 
     """
-    # TODO get all service site at db
     all_sites = []
     async for site in db.sites.find({}, {"_id": 0}):
         all_sites.append(site)
@@ -38,7 +38,7 @@ async def read_site_names(
     }
 
 
-@router.get("/site/{site_name}")
+@router.get("/site/{site_name}", response_model=Site, response_description="Service site data retrived")
 async def read_one_site(
     site_name: str
 ):
@@ -48,22 +48,22 @@ async def read_one_site(
         - **site_id** : service site id
     """
     site = await db.sites.find_one({"name": site_name})
-    if not site:
-        raise HTTPException(
-            status_code=404, detail="service site is not found")
-    return {
-        "response": {
-            "message": "found a service site",
-            "service site": {
-                "name": site["name"],
-                "location": site["location"]
+    if site:
+        return {
+            "response": {
+                "message": "found a service site",
+                "service site": {
+                    "name": site["name"],
+                    "location": site["location"]
+                }
             }
         }
-    }
+    raise HTTPException(
+        status_code=404, detail="service site is not found")
 
 
-@router.post("/site")
-async def create_site(
+@router.post("/site", response_description="Service site data added into the database")
+async def add_site(
     name: str,
     location: str
 ):
@@ -73,11 +73,11 @@ async def create_site(
         - **name** : service site name
         - **location** : service site location
     """
-    
+
     async for site in db.sites.find({"name": name}):
         if site:
             return{
-                "response":{
+                "response": {
                     "message": "servide site is existed",
                     "service site": {
                         "name": site["name"],
@@ -91,16 +91,16 @@ async def create_site(
     })
     return {
         "response": {
-            "message": "create site success",
+            "message": "create site successfully.",
         }
     }
 
 
-@router.patch("/site/{site_name}")
+@router.patch("/site/{site_name}", response_model=Site)
 async def update_site(
     site_name: str,
-    new_name: Optional[str]="",
-    new_location: Optional[str]="",
+    new_name: Optional[str] = "",
+    new_location: Optional[str] = "",
 ):
     """
         Update a service site information:
@@ -122,16 +122,21 @@ async def update_site(
         new_value["$set"].pop("location")
 
     query = {"name": site_name}
-    await db.sites.update_one(query, new_value)
+    update_result = await db.sites.update_one(query, new_value)
 
-    return{
-        "response": {
-            "message": "update success"
-        }
-    }
+    if update_result.modified_count == 1:
+        if (update_site := await db.sites.find_one({"name": site_name}) is not None):
+            return{
+                "response": {
+                    "message": f"update {site_name} success"
+                }
+            }
+
+    raise HTTPException(
+        status_code=404, detail=f"service site {site_name} not found")
 
 
-@router.delete("/site/{site_name}")
+@router.delete("/site/{site_name}", response_description="Service site data deleted from the database")
 async def remove_site(
     site_name: str
 ):
@@ -141,14 +146,18 @@ async def remove_site(
         - **site_name** : service site deleted name
     """
 
-    await db.sites.delete_one({"name": site_name})
-    return {
-        "response": {
-            "message": "remove success"
+    delete_result = await db.sites.delete_one({"name": site_name})
+    if delete_result.delete_count == 1:
+        return {
+            "response": {
+                "message": f"delete {site_name} success"
+            }
         }
-    }
+    raise HTTPException(
+        status_code=404, detail=f"service site {site_name} not found")
 
-@router.delete("/sites")
+
+@router.delete("/sites", include_in_schema=False)
 async def remove_all_site():
     """
         Remove all service site 

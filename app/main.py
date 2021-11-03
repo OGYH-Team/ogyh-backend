@@ -1,9 +1,6 @@
 
 from fastapi import FastAPI
 
-from app.database import db
-
-
 from app.routers import reservation, service_site
 
 description = """
@@ -29,8 +26,8 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
-app.include_router(reservation.router)
-app.include_router(service_site.router)
+app.include_router(reservation.router, prefix="/api")
+app.include_router(service_site.router, prefix="/api")
 
 
 @app.get("/", include_in_schema=False)
