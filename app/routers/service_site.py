@@ -3,7 +3,7 @@ from fastapi import APIRouter, HTTPException
 from typing import Optional
 
 from app.utils.paginator import Paginator
-from app.database import db, update_site
+from app.database import db
 from app.models.site import Site
 
 router = APIRouter(
