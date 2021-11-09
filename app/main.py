@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI
 
-from app.routers import reservation, service_site
+from app.routers import reservation, service_site, queue_arranging
 
 description = """
 Service Site API provides a vaccination queue for each user reservation
@@ -28,6 +28,7 @@ app = FastAPI(
 
 app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
+app.include_router(queue_arranging.router, prefix="/api")
 
 
 @app.get("/", include_in_schema=False)
