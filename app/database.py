@@ -2,7 +2,7 @@ from bson.objectid import ObjectId
 import motor.motor_asyncio
 import os
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"])
+client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
 db = client.ogyhDatabase
 
 site_collection = db.get_collection("sites")
@@ -20,7 +20,6 @@ async def retrived_sites():
     sites = []
     async for site in site_collection.find():
         sites.append(site_helper(site))
-    print(sites)
     return sites
 
 async def add_site(site_data: dict):
