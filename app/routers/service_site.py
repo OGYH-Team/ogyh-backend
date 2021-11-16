@@ -112,7 +112,7 @@ async def add_site_data(
     result = dict(**site.dict())
     new_site = await add_site(result)
     return {
-        "response": new_site
+        "message": new_site
     }
 
 
@@ -142,11 +142,10 @@ async def updated_site(
         - **location** : a new service site location
     """
     new_value = dict(**site.dict())
-
     updated_site = await update_site(id, new_value)
     if updated_site:
         return{
-            "response": f"update {id} success"
+            "message": f"update {id} success"
         }
     raise HTTPException(
         status_code=404, detail=f"service site {id} not found")
@@ -177,7 +176,7 @@ async def remove_site(
     deleted_site = await delete_site(id)
     if deleted_site:
         return {
-            "response": f"delete site id {id} success"
+            "message": f"delete site id {id} success"
         }
     raise HTTPException(
         status_code=404, detail=f"service site {id} not found")
