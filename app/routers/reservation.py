@@ -1,78 +1,54 @@
+"""Api router for reservation."""
 from fastapi import APIRouter, HTTPException
 from typing import Optional
 
-from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_service_site_avaliable
+from app.utils.utils import (
+    arranging_reservation_by_site_name,
+    fetch_url,
+    get_service_site_avaliable,
+)
 from app.utils.paginator import Paginator
 from app.database import retrieve_site
-from app.models.reservation import GetReservationsResponse, GetReservationResponse, Message
-
-router = APIRouter(
-    prefix="/site/{site_id}",
-    tags=["reservation"]
+from app.models.reservation import (
+    GetReservationsResponse,
+    GetReservationResponse,
+    Message,
+    example_get_reservations,
+    example_reservation,
 )
+import bson
+
+router = APIRouter(prefix="/site/{site_id}", tags=["reservation"])
 
 
-@router.get("/reservations",
-            response_description="Reservation retrived",
-            summary="Get every reservations",
-            response_model=GetReservationsResponse,
-            responses={
-                200: {"description": "Found a service site",
-                      "content": {
-                          "application/json": {
-                              "example": {
-                                  "response": {
-                                      "reservations": [
-                                          {
-                                              "citizen_id": "1103403134124",
-                                              "site_name": "og",
-                                              "vaccine_name": "Astra",
-                                              "timestamp": "2021-11-16 15:27:37.302545",
-                                              "queue": "None",
-                                              "checked": "False",
-                                              "citizen_data": {
-                                                  "citizen_id": "1103403134124",
-                                                  "name": "Chayapol",
-                                                  "surname": "Chaipongsawalee",
-                                                  "birth_date": "2000-11-05",
-                                                  "occupation": "student",
-                                                  "phone_number": "0816192649",
-                                                  "is_risk": "False",
-                                                  "address": "bkk",
-                                                  "vaccine_taken": "[]"
-                                              }
-                                          }
-                                      ]
-                                  }
-                              }
-                          }
-                      }}
-            }
-            )
+@router.get(
+    "/reservations",
+    response_description="Reservation retrived",
+    summary="Get every reservations",
+    response_model=GetReservationsResponse,
+    responses={
+        200: {
+            "description": "Found a service site",
+            "content": {"application/json": {"example": example_get_reservations}},
+        }
+    },
+)
 async def read_users_reservations(
-    site_id: str,
-    limit: Optional[int] = None,
-    page: Optional[int] = 1
+    site_id: str, limit: Optional[int] = None, page: Optional[int] = 1
 ):
     """
-        Show users vaccination reservations information:
-        - **site_id** : a valid service site id
-        - **limit** : number of users to be shown as a result
-        - **page** : number of pages to be shown as a result
+    Show users vaccination reservations information:
+    - **site_id** : a valid service site id
+    - **limit** : number of users to be shown as a result
+    - **page** : number of pages to be shown as a result
     """
-    # TODO check 12-byte input or a 24-character hex string
     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
-    if len(user_data) <= 0:
-        return{
-            "response": {
-                "No reservation"
-            }
-        }
-
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
-
-    site = await retrieve_site(site_id)
-
+    try:
+        site = await retrieve_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=404, detail=message)
     if site:
         try:
             name = site["name"]
@@ -92,69 +68,48 @@ async def read_users_reservations(
     raise HTTPException(status_code=404)
 
 
-@router.get("/reservation/{citizen_id}",
-            response_description="Reservations retrived",
-            summary="Get a reservation by citizen_id",
-            response_model=GetReservationResponse,
-            responses={
-                404: {"model": Message, "description": "Not found"},
-                200: {"description": "Found a reservations",
-                      "content": {
-                          "application/json": {
-                              "example": {
-                                  "reservation":
-                                  {
-                                      "citizen_id": "1103403134124",
-                                      "site_name": "og",
-                                      "vaccine_name": "Astra",
-                                      "timestamp": "2021-11-16 15:27:37.302545",
-                                      "queue": "None",
-                                      "checked": "False",
-                                      "citizen_data": {
-                                          "citizen_id": "1103403134124",
-                                          "name": "Chayapol",
-                                          "surname": "Chaipongsawalee",
-                                          "birth_date": "2000-11-05",
-                                          "occupation": "student",
-                                          "phone_number": "0816192649",
-                                          "is_risk": "False",
-                                          "address": "bkk",
-                                          "vaccine_taken": "[]"
-                                      }
-                                  }
-
-                              }
-                          }
-                      }
-                      }
-            }
-            )
+@router.get(
+    "/reservation/{citizen_id}",
+    response_description="Reservations retrived",
+    summary="Get a reservation by citizen_id",
+    response_model=GetReservationResponse,
+    responses={
+        404: {"model": Message, "description": "Not found"},
+        200: {
+            "description": "Found a reservations",
+            "content": {"application/json": {"example": example_reservation}},
+        },
+    },
+)
 async def read_users_reservation(
     site_id: str,
     citizen_id: str,
 ):
     """
-        Show users a vaccination reservation information according to citizen id:
+    Show users a vaccination reservation information according to citizen id:
 
-        - **site_id** : a valid service site id
-        - **citizen_id**: a specific citizen_id
+    - **site_id** : a valid service site id
+    - **citizen_id**: a specific citizen_id
 
     """
     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
-    
-    site = await retrieve_site(site_id)
+
+    try:
+        site = await retrieve_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=404, detail=message)
 
     if site:
         search_site = get_service_site_avaliable(
-            data=user_data_by_site_name, key=site["name"])
+            data=user_data_by_site_name, key=site["name"]
+        )
         if search_site:
             user_data_at_site = user_data_by_site_name[search_site]
             for user in user_data_at_site:
-                if(user["citizen_id"] == citizen_id):
-                    return {"response": {
-                        "reservation": user
-                    }}
+                if user["citizen_id"] == citizen_id:
+                    return {"response": {"reservation": user}}
     raise HTTPException(status_code=404, detail="site name is not found")
 
 
