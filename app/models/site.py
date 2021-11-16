@@ -29,5 +29,8 @@ class GetSitesResponse(BaseModel):
     response: List[Site]
 
 
+class GetSiteResponse(BaseModel):
+    response: Site
+
 class Message(BaseModel):
     message: str

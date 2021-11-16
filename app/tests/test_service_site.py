@@ -5,6 +5,7 @@ from fastapi.testclient import TestClient
 import bson 
 import unittest
 import requests_mock
+import json
 
 class TestServiceSite(unittest.TestCase):
 
@@ -47,22 +48,24 @@ class TestServiceSite(unittest.TestCase):
 
     def test_update_service_site(self):
         """Test updated valid service site using mock request_mock."""
-        data = {"location": "bangkok"}
+        data = {"name": "OGYH2",
+                "location": "bangkok"}
         responses = self.client.put(
-            f"{self.base_url}/site/617923857ad4eeefea76d121", params=data)
+            f"{self.base_url}/site/617923857ad4eeefea76d121", data=json.dumps(data))
         self.assertEqual(200, responses.status_code)
         responses = self.client.get(
             f"{self.base_url}/site/617923857ad4eeefea76d121")
         self.assertEqual({
                 "name": "OGYH2",
                 "location": "bangkok"
-                }, responses.json()['response']['service site'])
+                }, responses.json()['response'])
 
     def test_update_invalid_service_site(self):
         """Test updated invalid service site using mock request_mock."""
-        data = {"location": "bangkok"}
+        data = {"name": "OGYH2",
+                "location": "bangkok"}
         responses = self.client.put(
-            f"{self.base_url}/site/617923857ad4eeefea76d120", params=data)
+            f"{self.base_url}/site/617923857ad4eeefea76d120", data=json.dumps(data))
         self.assertEqual(404, responses.status_code)
  
 
