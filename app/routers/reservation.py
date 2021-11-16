@@ -77,7 +77,6 @@ async def read_users_reservations(
         try:
             name = site["name"]
             user_data_at_site = user_data_by_site_name[name]
-            print(user_data_at_site)
 
             user_paginator = Paginator(user_data_at_site)
             user_paginator.paginate(page=page, limit=limit)
@@ -143,7 +142,7 @@ async def read_users_reservation(
     """
     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
-
+    
     site = await retrieve_site(site_id)
 
     if site:
