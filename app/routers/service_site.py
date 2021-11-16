@@ -4,7 +4,7 @@ from typing import Optional
 
 from app.utils.paginator import Paginator
 from app.database import add_site, delete_site, retrieve_site, retrive_sites, update_site
-from app.models.site import GetSiteResponse, GetSitesResponse, Message, Site
+from app.models.site import Site, GetSitesResponse, Message
 
 router = APIRouter(
     tags=["service site"]
@@ -55,7 +55,7 @@ async def read_site_names(
 @router.get("/site/{id}",
             response_description="Service site data retrived",
             summary="Get a service site info by id",
-            response_model=GetSiteResponse,
+            response_model=Site,
             responses={
                 404: {"model": Message, "description": "Not found"},
                 200: {"description": "Found a service site",

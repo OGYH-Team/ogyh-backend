@@ -1,6 +1,5 @@
 from typing import List, Dict, Optional
 from pydantic import BaseModel, Extra, create_model
-from starlette import responses
 
 
 class Site(BaseModel):
@@ -28,10 +27,6 @@ class PageData(BaseModel):
 
 class GetSitesResponse(BaseModel):
     response: List[Site]
-
-
-class GetSiteResponse(BaseModel):
-    response: Site
 
 
 class Message(BaseModel):
