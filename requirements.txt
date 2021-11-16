@@ -5,3 +5,5 @@ motor
 pymongo[srv]
 pydantic
 requests_mock
+pytest
+pytest-cov
