@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException
 from typing import Optional
-from fastapi.params import Body
 
 from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_service_site_avaliable
 from app.utils.paginator import Paginator
@@ -61,6 +60,7 @@ async def read_users_reservations(
         - **limit** : number of users to be shown as a result
         - **page** : number of pages to be shown as a result
     """
+    # TODO check 12-byte input or a 24-character hex string
     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
     if len(user_data) <= 0:
         return{
@@ -74,10 +74,11 @@ async def read_users_reservations(
     site = await retrieve_site(site_id)
 
     if site:
-        search_site = get_service_site_avaliable(
-            data=user_data_by_site_name, key=site["name"])
-        if search_site:
-            user_data_at_site = user_data_by_site_name[search_site]
+        try:
+            name = site["name"]
+            user_data_at_site = user_data_by_site_name[name]
+            print(user_data_at_site)
+
             user_paginator = Paginator(user_data_at_site)
             user_paginator.paginate(page=page, limit=limit)
             return {
@@ -86,6 +87,9 @@ async def read_users_reservations(
                     "reservations": user_paginator.get_items()
                 }
             }
+        except:
+            message = f"Reservation in Service site {site_id} not found"
+            raise HTTPException(status_code=404, detail=message)
     raise HTTPException(status_code=404)
 
 
