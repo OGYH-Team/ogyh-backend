@@ -1,124 +1,172 @@
+"""Api router for reservation."""
 from fastapi import APIRouter, HTTPException
 from typing import Optional
 
-from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_cancellation
-from app.utils.paginator import Paginator
-
-router = APIRouter(
-    prefix="/site/{site_id}",
-    tags=["reservation"]
+from app.utils.utils import (
+    arranging_reservation_by_site_name,
+    fetch_url,
+    get_service_site_avaliable,
 )
+from app.utils.paginator import Paginator
+from app.database import retrieve_site
+from app.models.reservation import (
+    GetReservationsResponse,
+    GetReservationResponse,
+    Message,
+    example_get_reservations,
+    example_reservation,
+)
+import bson
+
+router = APIRouter(prefix="/site/{site_id}", tags=["reservation"])
 
 
-@router.get("/reservations")
-def read_users_reservations(
-    limit: Optional[int] = None,
-    page: Optional[int] = 1
+@router.get(
+    "/reservations",
+    response_description="Reservation retrived",
+    summary="Get every reservations",
+    response_model=GetReservationsResponse,
+    responses={
+        200: {
+            "description": "Found a service site",
+            "content": {"application/json": {"example": example_get_reservations}},
+        }
+    },
+)
+async def read_users_reservations(
+    site_id: str, limit: Optional[int] = None, page: Optional[int] = 1
 ):
     """
-        Show users vaccination reservations information:
-
-        - **limit** : number of users to be shown as a result
-        - **page** : number of pages to be shown as a result
+    Show users vaccination reservations information:
+    - **site_id** : a valid service site id
+    - **limit** : number of users to be shown as a result
+    - **page** : number of pages to be shown as a result
     """
-    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
+    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
+    try:
+        site = await retrieve_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=404, detail=message)
+    if site:
+        try:
+            name = site["name"]
+            user_data_at_site = user_data_by_site_name[name]
+
+            user_paginator = Paginator(user_data_at_site)
+            user_paginator.paginate(page=page, limit=limit)
+            return {
+                "response": {
+                    # "reservations_page_data": user_paginator.get_page_data(),
+                    "reservations": user_paginator.get_items()
+                }
+            }
+        except:
+            message = f"Reservation in Service site {site_id} not found"
+            raise HTTPException(status_code=404, detail=message)
+    raise HTTPException(status_code=404)
+
+
+@router.get(
+    "/reservation/{citizen_id}",
+    response_description="Reservations retrived",
+    summary="Get a reservation by citizen_id",
+    response_model=GetReservationResponse,
+    responses={
+        404: {"model": Message, "description": "Not found"},
+        200: {
+            "description": "Found a reservations",
+            "content": {"application/json": {"example": example_reservation}},
+        },
+    },
+)
+async def read_users_reservation(
+    site_id: str,
+    citizen_id: str,
+):
+    """
+    Show users a vaccination reservation information according to citizen id:
+
+    - **site_id** : a valid service site id
+    - **citizen_id**: a specific citizen_id
+
+    """
+    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
 
-    user_at_site = []
-    site_names = user_data_by_site_name.keys()
-    for site_name in site_names:
-        user_at_site += user_data_by_site_name[site_name]
-    user_paginator = Paginator(user_at_site)
-    user_paginator.paginate(page=page, limit=limit)
+    try:
+        site = await retrieve_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=404, detail=message)
 
-    return {
-        "response": {
-            "users_page_data": user_paginator.get_page_data(),
-            "users": user_paginator.get_items()
-        }
-    }
-
-
-@router.get("/reservation/{reservation_id}")
-def read_users_reservations_by_site_name(
-    reservation_id: int,
-    limit: Optional[int] = None,
-    page: Optional[int] = 1
-):
-    """
-        Show users vaccination reservations information according to site name:
-
-        - **site_name** : the vaccination site that provided vaccine to the user
-        - **limit** : number of users to be shown as a result
-        - **page** : number of pages to be shown as a result
-
-    """
-    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservation")
-    user_data_by_site_name = arranging_reservation_by_site_name(user_data)
-
-    user_at_site = []
-    # site_names = user_data_by_site_name.keys()
-
-    # if site_name not in site_names:
-    #     raise HTTPException(status_code=404, detail="site name is not found")
-    # else:
-    #     user_at_site = user_data_by_site_name[site_name]
-
-    site_name = ""
-
-    user_paginator = Paginator(user_at_site)
-    user_paginator.paginate(page=page, limit=limit)
-
-    return {
-        "response": {
-            "site_name": site_name,
-            "users_page_data": user_paginator.get_page_data(),
-            "users": user_paginator.get_items()
-        }
-    }
+    if site:
+        search_site = get_service_site_avaliable(
+            data=user_data_by_site_name, key=site["name"]
+        )
+        if search_site:
+            user_data_at_site = user_data_by_site_name[search_site]
+            for user in user_data_at_site:
+                if user["citizen_id"] == citizen_id:
+                    return {"response": {"reservation": user}}
+    raise HTTPException(status_code=404, detail="site name is not found")
 
 
-@router.delete("/reservation")
-def users_cancellation(
-    citizen_id: Optional[int] = None,
-):
-    """
-        Cancelled user vaccination information according to their citizen_id:
+# @router.delete("/reservation/{citizen_id}")
+# async def users_cancellation(
+#     site_id: str,
+#     citizen_id: str
+# ):
+#     """
+#         Cancelled user vaccination information according to their citizen_id:
 
-        - **citizen_id**: each cancellation must have a citizen_id
+#         - **site_id** : a valid service site id
+#         - **citizen_id**: each cancellation must have a citizen_id
 
-    """
-    user_data = {}
-    user_cancellation_data = get_cancellation(
-        arranging_reservation_by_site_name(user_data["data"]), citizen_id)
+#     """
+#     import requests
+#     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
+#     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
 
-    if not citizen_id:
-        raise HTTPException(status_code=404, detail="citizen id not provided")
-    if not user_cancellation_data:
-        raise HTTPException(status_code=404, detail="citizen id not found")
+#     site = await retrieve_site(site_id)
+#     if site:
+#         search_site = get_service_site_avaliable(
+#             data=user_data_by_site_name, key=site["name"])
+#         if search_site:
+#             user_data_at_site = user_data_by_site_name[search_site]
+#             for user in user_data_at_site:
+#                 if(user["citizen_id"] == citizen_id):
+#                     body = {"citizen_id": citizen_id}
+#                     response = requests.delete(
+#                         "https://wcg-apis.herokuapp.com/reservations", data=body)
+#                     return user
+#     raise HTTPException(status_code=404, detail="citizen id not found")
 
-    return {
-        "response": {
-            "citizen_id": citizen_id,
-            "site_name": user_cancellation_data['site_name'],
-        }
-    }
 
+# @router.put("/reservation/{citizen_id}")
+# async def update_reservation(
+#     site_id: str,
+#     citizen_id: str,
+# ):
+#     """
+#         Update user vaccination information according to their citizen_id:
 
-@router.patch("/reservation")
-def update_reservation(
-    citizen_id: Optional[int] = None,
-):
-    """
-        Update user vaccination information according to their citizen_id:
+#         - **site_id** : a valid service site id
+#         - **citizen_id**: each cancellation must have a citizen_id
 
-        - **citizen_id**: each cancellation must have a citizen_id
+#     """
+#     user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
+#     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
 
-    """
-    update_data = {}
-
-    return{
-        "response": {
-            "user": update_data
-        }
-    }
+#     site = await retrieve_site(site_id)
+#     if site:
+#         search_site = get_service_site_avaliable(
+#             data=user_data_by_site_name, key=site["name"])
+#         if search_site:
+#             user_data_at_site = user_data_by_site_name[search_site]
+#             for user in user_data_at_site:
+#                 if(user["citizen_id"] == citizen_id):
+#                     # TODO update reservation
+#                     return user
+#     raise HTTPException(status_code=404, detail="citizen id not found")

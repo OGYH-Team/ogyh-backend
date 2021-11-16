@@ -10,9 +10,10 @@ def fetch_url(URL):
 
 def arranging_reservation_by_site_name(DATA):
     """Return reservation data that arranging by site name"""
+
     reservations = {}
     for item in DATA:
-        site_name_key = item['site_name'].capitalize()
+        site_name_key = item['site_name']
         if site_name_key in reservations:
             reservations[site_name_key] = [*reservations[site_name_key], item]
         else:
@@ -29,4 +30,11 @@ def get_cancellation(DATA, citizen_id):
             if cancel_id == citizen_id:
                 user['queue'] = ""
                 return user
+    return None
+
+
+def get_service_site_avaliable(data: dict, key: str):
+    for i in data:
+        if(key == i):
+            return i
     return None

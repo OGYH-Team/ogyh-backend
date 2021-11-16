@@ -1,5 +1,5 @@
 # Getting Started
-
+[![codecov](https://codecov.io/gh/OGYH-Team/ogyh-backend/branch/main/graph/badge.svg?token=90ZUcbpAOk)](https://codecov.io/gh/OGYH-Team/ogyh-backend)
 ## Run server
 
 - Locally
