@@ -7,6 +7,7 @@ db = client.ogyhDatabase
 
 site_collection = db.get_collection("sites")
 
+
 def site_helper(site) -> dict:
     """Return a dict that contain extracted cursor object."""
     return {
@@ -15,25 +16,33 @@ def site_helper(site) -> dict:
         "location": site["location"]
     }
 
-async def retrived_sites():
+
+async def retrive_sites():
     """Retrieve all students present in the database."""
     sites = []
     async for site in site_collection.find():
         sites.append(site_helper(site))
-    print(sites)
     return sites
+
 
 async def add_site(site_data: dict):
     """Add a new student into to the database."""
+    sites = await retrive_sites()
+    for site in sites:
+        if site_data["name"] == site["name"]:
+            id = str(site["id"])
+            return f"There's a service site with id {id} in a database"
     site = await site_collection.insert_one(site_data)
     new_site = await site_collection.find_one({"_id": site.inserted_id})
     return site_helper(new_site)
+
 
 async def retrieve_site(id: str) -> dict:
     """Retrieve a student with a matching ID."""
     site = await site_collection.find_one({"_id": ObjectId(id)})
     if site:
         return site_helper(site)
+
 
 async def update_site(id: str, data: dict):
     """Update a site with a matching ID."""
@@ -48,6 +57,7 @@ async def update_site(id: str, data: dict):
         if updated_student:
             return True
         return False
+
 
 async def delete_site(id: str):
     """Delete a site from the database."""
