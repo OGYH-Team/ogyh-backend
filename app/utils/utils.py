@@ -10,8 +10,9 @@ def fetch_url(URL):
 
 def arranging_reservation_by_site_name(DATA):
     """Return reservation data that arranging by site name"""
+
     reservations = {}
-    for item in DATA["reservations"]:
+    for item in DATA:
         site_name_key = item['site_name']
         if site_name_key in reservations:
             reservations[site_name_key] = [*reservations[site_name_key], item]

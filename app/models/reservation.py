@@ -1,4 +1,4 @@
-from typing import List
+from typing import Dict, List
 from pydantic import BaseModel, Extra
 from starlette import responses
 
@@ -6,11 +6,11 @@ from starlette import responses
 class Reservation(BaseModel):
     citizen_id: str
     site_name: str
-    vaccine_taken: List
-    time_stamp: str
+    vaccine_name: str
+    timestamp: str
     queue: str
-    checked: bool
-    citizen_data: dict
+    checked: str
+    citizen_data: Dict
 
 class GetReservation(BaseModel):
     reservation: Reservation

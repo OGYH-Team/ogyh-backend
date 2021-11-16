@@ -2,8 +2,6 @@ from fastapi import APIRouter, HTTPException
 from typing import Optional
 from fastapi.params import Body
 
-from starlette import responses
-
 from app.utils.utils import arranging_reservation_by_site_name, fetch_url, get_service_site_avaliable
 from app.utils.paginator import Paginator
 from app.database import retrieve_site
@@ -26,19 +24,25 @@ router = APIRouter(
                               "example": {
                                   "response": {
                                       "reservations": [
-                                          {"citizen_id": 1270677340,
-                                           "citizen_data": {
-                                               "address": "house",
-                                               "birth_date": "Thu Jul 23 00:47:35 1981",
-                                               "citizen_id": 1270677340,
-                                               "name": "Melissa",
-                                               "occupation": "carry",
-                                               "surname": "Morris",
-                                               "vaccine_taken": []
-                                           },
-                                              "site_name": "OGYH1",
-                                              "timestamp": 1609719568,
-                                              "queue": "None"}
+                                          {
+                                              "citizen_id": "1103403134124",
+                                              "site_name": "og",
+                                              "vaccine_name": "Astra",
+                                              "timestamp": "2021-11-16 15:27:37.302545",
+                                              "queue": "None",
+                                              "checked": "False",
+                                              "citizen_data": {
+                                                  "citizen_id": "1103403134124",
+                                                  "name": "Chayapol",
+                                                  "surname": "Chaipongsawalee",
+                                                  "birth_date": "2000-11-05",
+                                                  "occupation": "student",
+                                                  "phone_number": "0816192649",
+                                                  "is_risk": "False",
+                                                  "address": "bkk",
+                                                  "vaccine_taken": "[]"
+                                              }
+                                          }
                                       ]
                                   }
                               }
@@ -64,6 +68,7 @@ async def read_users_reservations(
                 "No reservation"
             }
         }
+
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
 
     site = await retrieve_site(site_id)
@@ -95,19 +100,25 @@ async def read_users_reservations(
                           "application/json": {
                               "example": {
                                   "reservation":
-                                      {"citizen_id": 1270677340,
-                                       "citizen_data": {
-                                           "address": "house",
-                                           "birth_date": "Thu Jul 23 00:47:35 1981",
-                                           "citizen_id": 1270677340,
-                                           "name": "Melissa",
-                                           "occupation": "carry",
-                                           "surname": "Morris",
-                                           "vaccine_taken": []
-                                       },
-                                          "site_name": "OGYH1",
-                                          "timestamp": 1609719568,
-                                          "queue": "None"}
+                                  {
+                                      "citizen_id": "1103403134124",
+                                      "site_name": "og",
+                                      "vaccine_name": "Astra",
+                                      "timestamp": "2021-11-16 15:27:37.302545",
+                                      "queue": "None",
+                                      "checked": "False",
+                                      "citizen_data": {
+                                          "citizen_id": "1103403134124",
+                                          "name": "Chayapol",
+                                          "surname": "Chaipongsawalee",
+                                          "birth_date": "2000-11-05",
+                                          "occupation": "student",
+                                          "phone_number": "0816192649",
+                                          "is_risk": "False",
+                                          "address": "bkk",
+                                          "vaccine_taken": "[]"
+                                      }
+                                  }
 
                               }
                           }
@@ -138,8 +149,9 @@ async def read_users_reservation(
             user_data_at_site = user_data_by_site_name[search_site]
             for user in user_data_at_site:
                 if(user["citizen_id"] == citizen_id):
-                    print(user)
-                    return user
+                    return {"response": {
+                        "reservation": user
+                    }}
     raise HTTPException(status_code=404, detail="site name is not found")
 
 
