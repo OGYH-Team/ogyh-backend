@@ -9,6 +9,7 @@ import requests_mock
 import json
 import asyncio
 
+
 class TestServiceSite(unittest.TestCase):
     async def setUp(self) -> None:
         self.client = TestClient(app)
@@ -64,7 +65,8 @@ class TestServiceSite(unittest.TestCase):
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d121")
             await asyncio.sleep(500)
             self.assertEqual(
-                {"name": "OGYH2", "location": "bangkok"}, responses.json()["response"]
+                {"name": "OGYH2", "location": "bangkok"}, responses.json()[
+                    "response"]
             )
 
     async def test_update_invalid_service_site(self):

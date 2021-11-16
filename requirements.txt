@@ -6,3 +6,4 @@ pymongo[srv]
 pydantic
 requests_mock
 coverage
+httpx
