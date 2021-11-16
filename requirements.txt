@@ -6,4 +6,6 @@ pymongo[srv]
 pydantic
 requests_mock
 coverage
+pytest
+pytest-cov
 httpx
