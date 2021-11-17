@@ -22,7 +22,7 @@ Project is created with:
 
 - Locally
 
-```properties
+```bash
 # Install all dependencies
 pip install -r requirements.txt
 
@@ -32,7 +32,7 @@ uvicorn app.main:app --port=5000 --reload
 
 - Docker
 
-```properties
+```bash
 # Build the docker image by local Dockerfile
 docker build -t ogyh-backend .
 
@@ -42,11 +42,11 @@ docker run -d -p 5000:5000 --name ogyh-backend --env-file .env -v $(pwd):/usr/og
 
 ## Testing
 - Testing with unittest
-```properties
+```bash
 python -m unittest
 ```
 - Running Coverage and Produce Coverage Reports
-```properties
+```bash
 coverage run -m unittest
 coverage report -m
 ```
