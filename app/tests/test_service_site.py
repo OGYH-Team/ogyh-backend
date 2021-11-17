@@ -8,9 +8,10 @@ import unittest
 import requests_mock
 import json
 import asyncio
+import asynctest
 
 
-class TestServiceSite(unittest.TestCase):
+class TestServiceSite(asynctest.TestCase):
     async def setUp(self) -> None:
         self.client = TestClient(app)
         self.base_url = "/api"
@@ -19,21 +20,18 @@ class TestServiceSite(unittest.TestCase):
         """Test retrive all the valid service sites."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/sites")
-        await asyncio.sleep(500)
         self.assertEqual(200, responses.status_code)
 
     async def test_get_service_site(self):
         """Test retrive specific service sites using its id which is 24 characters."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d121")
-        await asyncio.sleep(500)
         self.assertEqual(200, responses.status_code)
 
     async def test_get_invalid_service_site(self):
         """Test retrive invalid service sites."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d120")
-        await asyncio.sleep(500)
         self.assertEqual(404, responses.status_code)
 
     @unittest.skip("Not sure, will be fixed in the future")
@@ -50,7 +48,6 @@ class TestServiceSite(unittest.TestCase):
         data = {"hello": "ogyh2", "location": "12345"}
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.post(f"{self.base_url}/site", params=data)
-        await asyncio.sleep(500)
         self.assertEqual(422, response.status_code)
 
     async def test_update_service_site(self):
@@ -60,13 +57,10 @@ class TestServiceSite(unittest.TestCase):
             responses = await ac.put(
                 f"{self.base_url}/site/617923857ad4eeefea76d121", data=json.dumps(data)
             )
-            await asyncio.sleep(500)
             self.assertEqual(200, responses.status_code)
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d121")
-            await asyncio.sleep(500)
             self.assertEqual(
-                {"name": "OGYH2", "location": "bangkok"}, responses.json()[
-                    "response"]
+                {"name": "OGYH2", "location": "bangkok"}, responses.json()["response"]
             )
 
     async def test_update_invalid_service_site(self):
@@ -94,7 +88,9 @@ class TestServiceSite(unittest.TestCase):
     async def test_remove_invalid_12_byte_hex_service_site_id(self):
         """Test remove invalid service site using its id which is 24 characters."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
-            responses = await ac.delete(f"{self.base_url}/site/017923857ad4eeefea76d120")
+            responses = await ac.delete(
+                f"{self.base_url}/site/017923857ad4eeefea76d120"
+            )
             self.assertEqual(404, responses.status_code)
 
     async def test_remvoe_invalid_service_site(self):

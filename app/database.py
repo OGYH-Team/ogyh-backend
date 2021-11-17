@@ -1,8 +1,14 @@
 from bson.objectid import ObjectId
+from motor.motor_asyncio import (
+    AsyncIOMotorClient as MotorClient,
+)
 import motor.motor_asyncio
 import os
+import asyncio
 
-client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
+# client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
+client = MotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
+client.get_io_loop = asyncio.get_running_loop
 db = client.ogyhDatabase
 
 site_collection = db.get_collection("sites")

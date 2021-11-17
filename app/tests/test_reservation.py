@@ -1,20 +1,17 @@
-from starlette import responses
 from app.main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
-import unittest
 import asyncio
-import pytest
+import asynctest
 
 
-class TestReservation(unittest.TestCase):
-    @pytest.mark.anyio
+class TestReservation(asynctest.TestCase):
     async def setUp(self) -> None:
+        self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
         self.site_id = "618235a0ced6e0aec20a422f"
 
-    @pytest.mark.anyio
     async def test_get_all_reservations(self):
         """Test retrive all the valid reservation."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -23,7 +20,6 @@ class TestReservation(unittest.TestCase):
             )
             self.assertEqual(200, responses.status_code)
 
-    @pytest.mark.anyio
     async def test_get_limit_10_reservations(self):
         """Test retrive limit at 10 valid reservation per page."""
         page = {"limit": 10, "page": 1}
@@ -35,7 +31,6 @@ class TestReservation(unittest.TestCase):
             content = responses.json()["response"]
             self.assertLessEqual(len(content), 10)
 
-    @pytest.mark.anyio
     async def test_get_negative_limit_reservations(self):
         """Test retrive using negative limit reservation."""
         page = {
@@ -51,7 +46,7 @@ class TestReservation(unittest.TestCase):
             self.assertEqual(content["reservations"], [])
 
     # This may failed if the government module delete the reservation
-    @pytest.mark.anyio
+
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
         citizen_id = "1103403134124"
@@ -61,7 +56,6 @@ class TestReservation(unittest.TestCase):
             )
             self.assertEqual(200, responses.status_code)
 
-    @pytest.mark.anyio
     async def test_get_invalid_citizen_reservation(self):
         """Test retrive reservation by giving invalid citizen_id."""
         citizen_id = "11034031341243"
@@ -71,7 +65,6 @@ class TestReservation(unittest.TestCase):
             )
             self.assertEqual(404, responses.status_code)
 
-    @pytest.mark.anyio
     async def test_get_specific_reservation_from_invalid_site_id(self):
         """Test retrive specific reservation by giving invalid service_site id."""
         citizen_id = "1103403134124"
@@ -84,7 +77,6 @@ class TestReservation(unittest.TestCase):
             self.assertEqual(404, responses.status_code)
             self.assertEqual(content["detail"], "site name is not found")
 
-    @pytest.mark.anyio
     async def test_get_reservations_from_invalid_site_id(self):
         """Test retrive all reservations by giving invalid service_site id."""
         service_site = "111111111111111111111111"
@@ -94,7 +86,6 @@ class TestReservation(unittest.TestCase):
             )
             self.assertEqual(404, responses.status_code)
 
-    @pytest.mark.anyio
     async def test_get_empty_reservation_from_service_site(self):
         """Test retrive reservation from empty service_site."""
         service_site = "6179113760e255455240052b"
