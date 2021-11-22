@@ -1,5 +1,5 @@
 """Api router for service site."""
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from typing import Optional
 
 from app.utils.paginator import Paginator
@@ -16,8 +16,8 @@ router = APIRouter(
             summary="Get every service sites",
             response_model=GetSitesResponse,
             responses={
-                404: {"model": Message, "description": "Not found"},
-                200: {"description": "Found a service site",
+                status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
+                status.HTTP_200_OK: {"description": "Found a service site",
                       "content": {
                           "application/json": {
                               "example": {"response": [{"name": "service site 1", "location": "service site 1's location"}, {"name": "service site 2", "location": "service site 2's location"}, {"name": "service site 3", "location": "service site 3's location"}]}
@@ -57,8 +57,8 @@ async def read_site_names(
             summary="Get a service site info by id",
             response_model=GetSiteResponse,
             responses={
-                404: {"model": Message, "description": "Not found"},
-                200: {"description": "Found a service site",
+                status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
+                status.HTTP_200_OK: {"description": "Found a service site",
                       "content": {
                           "application/json": {
                               "example": {"response": {"name": "service site", "location": "location"}}
@@ -83,16 +83,16 @@ async def read_one_site(
             }
         }
     raise HTTPException(
-        status_code=404, detail="service site is not found")
+        status_code=status.HTTP_404_NOT_FOUND, detail="service site is not found")
 
 
 @router.post("/site",
              response_description="Service site data added into the database",
              summary="Create a new service site",
-             status_code=201,
+             status_code=status.HTTP_201_CREATED,
              response_model=Message,
              responses={
-                 201: {"description": "Create Successfull",
+                 status.HTTP_201_CREATED: {"description": "Create Successfull",
                                       "content": {
                                           "application/json": {
                                               "example": {"response": "create site id site_id success"}
@@ -121,8 +121,8 @@ async def add_site_data(
             summary="Update a service site",
             response_model=Message,
             responses={
-                404: {"model": Message, "description": "Not found"},
-                200: {"description": "Update Successfull",
+                status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
+                status.HTTP_200_OK: {"description": "Update Successfull",
                       "content": {
                           "application/json": {
                               "example": {"response": "update id site_id success"}
@@ -148,7 +148,7 @@ async def updated_site(
             "message": f"update {id} success"
         }
     raise HTTPException(
-        status_code=404, detail=f"service site {id} not found")
+        status_code=status.HTTP_404_NOT_FOUND, detail=f"service site {id} not found")
 
 
 @router.delete("/site/{id}",
@@ -156,8 +156,8 @@ async def updated_site(
                summary="Remove a service site",
                response_model=Message,
                responses={
-                   404: {"model": Message, "description": "Not found"},
-                   200: {"description": "Remove Successfull",
+                   status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
+                   status.HTTP_200_OK: {"description": "Remove Successfull",
                          "content": {
                              "application/json": {
                                  "example": {"response": "delete site id site_id success"}
@@ -179,4 +179,4 @@ async def remove_site(
             "message": f"delete site id {id} success"
         }
     raise HTTPException(
-        status_code=404, detail=f"service site {id} not found")
+        status_code=status.HTTP_404_NOT_FOUND, detail=f"service site {id} not found")
