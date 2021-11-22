@@ -10,3 +10,6 @@ pytest
 pytest-cov
 httpx
 asynctest
+passlib
+python-jose
+python-multipart
