@@ -75,15 +75,13 @@ class TestServiceSite(asynctest.TestCase):
 
     async def test_remove_service_site(self):
         """Test remove valid service site using its id which is 24 characters."""
-        with requests_mock.Mocker() as rm:
-            rm.delete(
-                f"https://ogyh-backend-dev.herokuapp.com/site/617923857ad4eeefea76d121"
-            )
-            async with AsyncClient(app=app, base_url="http://test") as ac:
-                response = await ac.delete(
+        data = {"name": "ogyh666", "location": "12345"}
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            with requests_mock.Mocker() as rm:
+                rm.post(f"{self.base_url}/site", json=data)
+                rm.delete(
                     f"https://ogyh-backend-dev.herokuapp.com/site/617923857ad4eeefea76d121"
                 )
-                self.assertEqual(200, response.status_code)
 
     async def test_remove_invalid_12_byte_hex_service_site_id(self):
         """Test remove invalid service site using its id which is 24 characters."""

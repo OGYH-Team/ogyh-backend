@@ -3,14 +3,44 @@ from fastapi.testclient import TestClient
 from httpx import AsyncClient
 import asyncio
 import asynctest
+import requests
+import json
 
 
 class TestReservation(asynctest.TestCase):
+    def create_citizen(self):
+        url = "https://wcg-apis.herokuapp.com/registration"
+        citizen_id = self.citizen["citizen_id"]
+        requests.delete(f"{url}/{citizen_id}")
+        res = requests.post(url, params=self.citizen)
+        url = "https://wcg-apis.herokuapp.com/reservation"
+        site_name = "og"
+        requests.delete(f"{url}/{citizen_id}")
+        res = requests.post(
+            url,
+            params={
+                "citizen_id": citizen_id,
+                "site_name": site_name,
+                "vaccine_name": "Astra",
+            },
+        )
+
     async def setUp(self) -> None:
         self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
         self.site_id = "618235a0ced6e0aec20a422f"
+        self.citizen = {
+            "citizen_id": "1130594839284",
+            "name": "name1",
+            "surname": "surname1",
+            "birth_date": "11-11-2000",
+            "occupation": "student",
+            "phone_number": "0194859483",
+            "is_risk": "False",
+            "address": "bkk",
+        }
+        self.create_citizen()
 
     async def test_get_all_reservations(self):
         """Test retrive all the valid reservation."""
@@ -49,7 +79,7 @@ class TestReservation(asynctest.TestCase):
 
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
-        citizen_id = "1103403134124"
+        citizen_id = self.citizen["citizen_id"]
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
                 f"{self.base_url}/site/{self.site_id}/reservation/{citizen_id}"
