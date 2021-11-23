@@ -31,6 +31,3 @@ class GetSitesResponse(BaseModel):
 
 class GetSiteResponse(BaseModel):
     response: Site
-
-class Message(BaseModel):
-    message: str

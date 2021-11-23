@@ -73,6 +73,7 @@ async def delete_site(id: str):
 
 
 def user_helper(user):
+    """Return a dict that contain extracted cursor object."""
     return {
         "id": str(user["_id"]),
         "username": user["username"],
@@ -81,6 +82,14 @@ def user_helper(user):
 
 
 async def retrieve_user(username: str):
+    """Retrieve a user with a matching username."""
+    user = await users_collection.find_one({"username": username})
+    if user:
+        return user_helper(user)
+
+
+async def retrieve_password(username: str):
+    """Retrieve a user with a matching password."""
     user = await users_collection.find_one({"username": username})
     if user:
         return user_helper(user)

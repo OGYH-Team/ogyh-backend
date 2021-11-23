@@ -9,10 +9,10 @@ from app.utils.utils import (
 )
 from app.utils.paginator import Paginator
 from app.database import retrieve_site
+from app.models.basic_model import Message
 from app.models.reservation import (
     GetReservationsResponse,
     GetReservationResponse,
-    Message,
     example_get_reservations,
     example_reservation,
 )

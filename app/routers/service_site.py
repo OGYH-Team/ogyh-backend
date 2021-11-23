@@ -11,7 +11,8 @@ from app.database import (
     retrive_sites,
     update_site,
 )
-from app.models.site import Site, GetSitesResponse, Message, GetSiteResponse
+from app.models.basic_model import Message
+from app.models.site import Site, GetSitesResponse, GetSiteResponse
 from app.models.user import User
 
 router = APIRouter(tags=["service site"])
@@ -23,7 +24,6 @@ router = APIRouter(tags=["service site"])
     summary="Get every service sites",
     response_model=GetSitesResponse,
     responses={
-        status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
         status.HTTP_200_OK: {
             "description": "Found a service site",
             "content": {
