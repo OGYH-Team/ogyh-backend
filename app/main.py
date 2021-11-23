@@ -37,7 +37,7 @@ app.add_middleware(
 app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
 app.include_router(queue_arranging.router, prefix="/api")
-app.include_router(authentication.router, prefix="/api")
+app.include_router(authentication.router)
 
 
 @app.get("/", include_in_schema=False)
