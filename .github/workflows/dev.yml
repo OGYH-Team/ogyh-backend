@@ -42,7 +42,7 @@ jobs:
       - name: Generate coverage report
         run: |
           pip install -r requirements.txt
-          coverage run -m unittest app/tests/test_service_site.py
+          coverage run -m unittest
           coverage xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v2
