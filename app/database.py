@@ -7,20 +7,19 @@ import os
 import asyncio
 
 # client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
-client = MotorClient(os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True)
+client = MotorClient(
+    os.environ["MONGODB_URL"], tls=True, tlsAllowInvalidCertificates=True
+)
 client.get_io_loop = asyncio.get_running_loop
 db = client.ogyhDatabase
 
 site_collection = db.get_collection("sites")
+users_collection = db.get_collection("users")
 
 
 def site_helper(site) -> dict:
     """Return a dict that contain extracted cursor object."""
-    return {
-        "id": str(site["_id"]),
-        "name": site["name"],
-        "location": site["location"]
-    }
+    return {"id": str(site["_id"]), "name": site["name"], "location": site["location"]}
 
 
 async def retrive_sites():
@@ -71,3 +70,17 @@ async def delete_site(id: str):
     if site:
         await site_collection.delete_one({"_id": ObjectId(id)})
         return True
+
+
+def user_helper(user):
+    return {
+        "id": str(user["_id"]),
+        "username": user["username"],
+        "password": user["password"],
+    }
+
+
+async def retrieve_user(username: str):
+    user = await users_collection.find_one({"username": username})
+    if user:
+        return user_helper(user)

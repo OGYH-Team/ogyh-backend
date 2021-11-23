@@ -13,3 +13,4 @@ asynctest
 passlib
 python-jose
 python-multipart
+bcrypt
