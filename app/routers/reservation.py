@@ -1,5 +1,5 @@
 """Api router for reservation."""
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, status
 from typing import Optional
 
 from app.utils.utils import (
@@ -9,10 +9,10 @@ from app.utils.utils import (
 )
 from app.utils.paginator import Paginator
 from app.database import retrieve_site
+from app.models.basic_model import Message
 from app.models.reservation import (
     GetReservationsResponse,
     GetReservationResponse,
-    Message,
     example_get_reservations,
     example_reservation,
 )
@@ -27,7 +27,7 @@ router = APIRouter(prefix="/site/{site_id}", tags=["reservation"])
     summary="Get every reservations",
     response_model=GetReservationsResponse,
     responses={
-        200: {
+        status.HTTP_200_OK: {
             "description": "Found a service site",
             "content": {"application/json": {"example": example_get_reservations}},
         }
@@ -48,7 +48,7 @@ async def read_users_reservations(
         site = await retrieve_site(site_id)
     except bson.errors.InvalidId:
         message = f"Service site id {site_id} is invalid"
-        raise HTTPException(status_code=404, detail=message)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
     if site:
         try:
             name = site["name"]
@@ -64,8 +64,8 @@ async def read_users_reservations(
             }
         except:
             message = f"Reservation in Service site {site_id} not found"
-            raise HTTPException(status_code=404, detail=message)
-    raise HTTPException(status_code=404)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
 
 
 @router.get(
@@ -74,8 +74,8 @@ async def read_users_reservations(
     summary="Get a reservation by citizen_id",
     response_model=GetReservationResponse,
     responses={
-        404: {"model": Message, "description": "Not found"},
-        200: {
+        status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
+        status.HTTP_200_OK: {
             "description": "Found a reservations",
             "content": {"application/json": {"example": example_reservation}},
         },
@@ -99,7 +99,7 @@ async def read_users_reservation(
         site = await retrieve_site(site_id)
     except bson.errors.InvalidId:
         message = f"Service site id {site_id} is invalid"
-        raise HTTPException(status_code=404, detail=message)
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
 
     if site:
         search_site = get_service_site_avaliable(
@@ -110,7 +110,7 @@ async def read_users_reservation(
             for user in user_data_at_site:
                 if user["citizen_id"] == citizen_id:
                     return {"response": {"reservation": user}}
-    raise HTTPException(status_code=404, detail="site name is not found")
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="site name is not found")
 
 
 # @router.delete("/reservation/{citizen_id}")

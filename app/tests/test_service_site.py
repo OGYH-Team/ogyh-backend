@@ -1,20 +1,31 @@
 from unittest.case import skip
-from starlette import responses
 from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from app.utils.oauth2 import get_current_user
 import bson
-import unittest
 import requests_mock
 import json
-import asyncio
 import asynctest
 
+def override_get_current_user():
+    valid_user = {
+            "username": "Tester",
+            "password": "tester123"
+    }
+    return valid_user
+
+app.dependency_overrides[get_current_user] = override_get_current_user
 
 class TestServiceSite(asynctest.TestCase):
     async def setUp(self) -> None:
         self.client = TestClient(app)
         self.base_url = "/api"
+        self.auth_url = "/login"
+        self.valid_user = {
+            "username": "Tester",
+            "password": "tester123"
+        }
 
     async def test_get_all_service_site(self):
         """Test retrive all the valid service sites."""
@@ -34,7 +45,7 @@ class TestServiceSite(asynctest.TestCase):
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d120")
         self.assertEqual(404, responses.status_code)
 
-    @unittest.skip("Not sure, will be fixed in the future")
+    @skip("Not sure, will be fixed in the future")
     def test_insert_service_site(self):
         """Test inserted service site with corrected format using mock request_mock."""
         data = {"name": "ogyh2", "location": "12345"}
@@ -47,6 +58,7 @@ class TestServiceSite(asynctest.TestCase):
         """Test inserted service site with corrected format using mock request_mock."""
         data = {"hello": "ogyh2", "location": "12345"}
         async with AsyncClient(app=app, base_url="http://test") as ac:
+            await ac.post(f"{self.auth_url}", data=self.valid_user)
             response = await ac.post(f"{self.base_url}/site", params=data)
         self.assertEqual(422, response.status_code)
 
@@ -67,7 +79,6 @@ class TestServiceSite(asynctest.TestCase):
         """Test updated invalid service site using mock request_mock."""
         data = {"name": "OGYH2", "location": "bangkok"}
         async with AsyncClient(app=app, base_url="http://test") as ac:
-
             responses = await ac.put(
                 f"{self.base_url}/site/617923857ad4eeefea76d120", data=json.dumps(data)
             )

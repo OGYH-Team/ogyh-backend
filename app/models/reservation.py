@@ -1,6 +1,5 @@
 from typing import Dict, List
 from pydantic import BaseModel, Extra
-from starlette import responses
 
 
 class Reservation(BaseModel):
@@ -41,10 +40,6 @@ class GetReservationsResponse(BaseModel):
         extra = Extra.allow
 
 
-class Message(BaseModel):
-    message: str
-
-
 example_reservation = {
     "citizen_id": "1103403134124",
     "site_name": "og",
@@ -65,6 +60,7 @@ example_reservation = {
     },
 }
 
-example_get_reservations = {"response": {"reservations": [example_reservation]}}
+example_get_reservations = {"response": {
+    "reservations": [example_reservation]}}
 
 example_get_reservation = {"reservation": example_reservation}
