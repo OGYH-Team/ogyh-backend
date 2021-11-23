@@ -20,9 +20,9 @@ router = APIRouter(tags=["Authentication"])
     status_code=status.HTTP_201_CREATED,
     # response_model=GetSitesResponse,
     responses={
-        status.HTTP_404_NOT_FOUND: {"model": "", "description": "Not found"},
+        status.HTTP_404_NOT_FOUND: {"model": "", "detail": "Not found"},
         status.HTTP_201_CREATED: {
-            "description": "Log in success",
+            "detail": "Log in success",
             "content": {"application/json": {"example": {"response": ""}}},
         },
     },

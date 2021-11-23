@@ -4,7 +4,6 @@ from httpx import AsyncClient
 import asyncio
 import asynctest
 import requests
-import json
 
 
 class TestReservation(asynctest.TestCase):
@@ -12,11 +11,11 @@ class TestReservation(asynctest.TestCase):
         url = "https://wcg-apis.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
         requests.delete(f"{url}/{citizen_id}")
-        res = requests.post(url, params=self.citizen)
+        requests.post(url, params=self.citizen)
         url = "https://wcg-apis.herokuapp.com/reservation"
         site_name = "og"
         requests.delete(f"{url}/{citizen_id}")
-        res = requests.post(
+        requests.post(
             url,
             params={
                 "citizen_id": citizen_id,

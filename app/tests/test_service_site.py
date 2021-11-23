@@ -1,13 +1,10 @@
 from unittest.case import skip
-from starlette import responses
 from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 import bson
-import unittest
 import requests_mock
 import json
-import asyncio
 import asynctest
 
 
@@ -34,7 +31,7 @@ class TestServiceSite(asynctest.TestCase):
             responses = await ac.get(f"{self.base_url}/site/617923857ad4eeefea76d120")
         self.assertEqual(404, responses.status_code)
 
-    @unittest.skip("Not sure, will be fixed in the future")
+    @skip("Not sure, will be fixed in the future")
     def test_insert_service_site(self):
         """Test inserted service site with corrected format using mock request_mock."""
         data = {"name": "ogyh2", "location": "12345"}
