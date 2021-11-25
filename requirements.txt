@@ -5,3 +5,12 @@ motor
 pymongo[srv]
 pydantic
 requests_mock
+coverage
+pytest
+pytest-cov
+httpx
+asynctest
+passlib
+python-jose
+python-multipart
+bcrypt

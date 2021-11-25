@@ -1,13 +1,24 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from app.database import db
 from datetime import datetime, timedelta
 from app.utils.sample_reservations import sample_reservations
+from app.models.user import User
+from app.utils.oauth2 import get_current_user
+
 
 router = APIRouter()
 
-time_str = ["10:00-10:30", "10:30-11:00", "11:00-11:30",
-            "11:30-12:00", "13:00-13:30", "13:30-14:00",
-            "14:00-14:30", "14:30-15:00", "15:30-16:00"]
+time_str = [
+    "10:00-10:30",
+    "10:30-11:00",
+    "11:00-11:30",
+    "11:30-12:00",
+    "13:00-13:30",
+    "13:30-14:00",
+    "14:00-14:30",
+    "14:30-15:00",
+    "15:30-16:00",
+]
 time_format = "%Y/%m/%d"
 
 
@@ -15,17 +26,16 @@ time_format = "%Y/%m/%d"
 async def read_time_slots():
     all_time_slots = []
     async for time_slot in db.time_slots.find({}):
-        all_time_slots.append({
-            **time_slot,
-            "_id": str(time_slot["_id"])
-        })
+        all_time_slots.append({**time_slot, "_id": str(time_slot["_id"])})
     return {"time_slots": all_time_slots}
 
 
 @router.get("/update_queue")
-async def update_queue():
-    reservations = sorted(sample_reservations, key=lambda r: (
-        r["citizen_data"]["occupation"], r["timestamp"]))
+async def update_queue(current_user: User = Depends(get_current_user)):
+    reservations = sorted(
+        sample_reservations,
+        key=lambda r: (r["citizen_data"]["occupation"], r["timestamp"]),
+    )
 
     all_time_slots = []
     time_slot_index = 0
@@ -33,11 +43,9 @@ async def update_queue():
     delta_time = 0
     date = datetime.strptime("2021/11/20", time_format)
 
-    all_time_slots.append({
-        "time_str": "10:00-10:30",
-        "date": "2021/11/20",
-        "reservations": []
-    })
+    all_time_slots.append(
+        {"time_str": "10:00-10:30", "date": "2021/11/20", "reservations": []}
+    )
 
     for reservation in reservations:
         if len(all_time_slots[time_slot_index]["reservations"]) == 10:
@@ -46,11 +54,13 @@ async def update_queue():
                 time_str_index = 0
                 delta_time += 1
 
-            all_time_slots.append({
-                "time_str": time_str[time_str_index],
-                "date": (date + timedelta(days=delta_time)).strftime(time_format),
-                "reservations": [reservation]
-            })
+            all_time_slots.append(
+                {
+                    "time_str": time_str[time_str_index],
+                    "date": (date + timedelta(days=delta_time)).strftime(time_format),
+                    "reservations": [reservation],
+                }
+            )
             time_slot_index += 1
 
         else:
