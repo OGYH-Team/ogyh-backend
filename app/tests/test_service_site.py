@@ -49,20 +49,19 @@ class TestServiceSite(asynctest.TestCase):
         """Test retrive all the valid service sites."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/sites")
-        self.assertEqual(200, responses.status_code)
+            self.assertEqual(200, responses.status_code)
 
     async def test_get_service_site(self):
         """Test retrive specific service sites using its id which is 24 characters."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/site/{self.valid_site_id}")
-        self.assertEqual(200, responses.status_code)
+            self.assertEqual(200, responses.status_code)
 
     async def test_get_invalid_service_site(self):
         """Test retrive invalid service sites."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(f"{self.base_url}/site/619f7c3289c2942b7d28f5e0")
-        self.assertEqual(404, responses.status_code)
-
+            self.assertEqual(404, responses.status_code)
 
     async def test_insert_service_site(self):
         """Test inserted service site with corrected format using mock request_mock."""
@@ -82,8 +81,9 @@ class TestServiceSite(asynctest.TestCase):
         }
         with requests_mock.Mocker() as rm:
             rm.post(f"{self.base_url}/site", json=valid_service_site)
-            response = self.client.post(f"{self.base_url}/site", json=valid_service_site)
-            self.assertEqual(201, response.status_code)
+            async with AsyncClient(app=app, base_url="http://test") as ac:
+                response = await ac.post(f"{self.base_url}/site", json=valid_service_site)
+                self.assertEqual(201, response.status_code)
 
     async def test_insert_service_site_with_invalid_data(self):
         """Test inserted service site with corrected format using mock request_mock."""
@@ -91,8 +91,7 @@ class TestServiceSite(asynctest.TestCase):
         valid_service_site.pop("location")
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.post(f"{self.base_url}/site", json=valid_service_site)
-        self.assertEqual(422, response.status_code)
-
+            self.assertEqual(422, response.status_code)
 
     async def test_update_service_site(self):
         """Test updated valid service site using mock request_mock."""
@@ -108,7 +107,6 @@ class TestServiceSite(asynctest.TestCase):
                 self.valid_service_site, responses.json()["response"]
             )
 
-
     async def test_update_invalid_service_site(self):
         """Test updated invalid service site using mock request_mock."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -117,14 +115,13 @@ class TestServiceSite(asynctest.TestCase):
             )
             self.assertEqual(404, responses.status_code)
 
-
     async def test_remove_service_site(self):
         """Test remove valid service site using its id which is 24 characters."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             with requests_mock.Mocker() as rm:
                 rm.post(f"{self.base_url}/site", json=self.valid_service_site)
                 rm.delete(
-                    f"https://ogyh-backend-dev.herokuapp.com/site/617923857ad4eeefea76d121"
+                    f"{self.base_url}/site/{self.valid_site_id}"
                 )
 
     async def test_remove_invalid_12_byte_hex_service_site_id(self):

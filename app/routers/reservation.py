@@ -53,7 +53,6 @@ async def read_users_reservations(
         try:
             name = site["name"]
             user_data_at_site = user_data_by_site_name[name]
-
             user_paginator = Paginator(user_data_at_site)
             user_paginator.paginate(page=page, limit=limit)
             return {

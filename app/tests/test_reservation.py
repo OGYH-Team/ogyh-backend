@@ -8,14 +8,14 @@ import requests
 
 class TestReservation(asynctest.TestCase):
     def create_citizen(self):
+        """Create a valid citizen and create a reservation."""
         url = "https://wcg-apis.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
-        requests.delete(f"{url}/{citizen_id}")
         requests.post(url, params=self.citizen)
         url = "https://wcg-apis.herokuapp.com/reservation"
-        site_name = "og"
+        site_name = "OGYH"
         requests.delete(f"{url}/{citizen_id}")
-        requests.post(
+        res = requests.post(
             url,
             params={
                 "citizen_id": citizen_id,
@@ -28,7 +28,7 @@ class TestReservation(asynctest.TestCase):
         self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
-        self.site_id = "618235a0ced6e0aec20a422f"
+        self.site_id = "619f82fe7d68e527d7763c59"
         self.citizen = {
             "citizen_id": "1130594839284",
             "name": "name1",
@@ -73,8 +73,6 @@ class TestReservation(asynctest.TestCase):
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
             self.assertEqual(content["reservations"], [])
-
-    # This may failed if the government module delete the reservation
 
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
@@ -125,6 +123,6 @@ class TestReservation(asynctest.TestCase):
             content = responses.json()
             self.assertEqual(
                 content["detail"],
-                "Reservation in Service site 6179113760e255455240052b not found",
+                "Not Found",
             )
             self.assertEqual(404, responses.status_code)
