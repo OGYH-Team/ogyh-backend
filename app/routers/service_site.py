@@ -12,7 +12,7 @@ from app.database import (
     update_site,
 )
 from app.models.basic_model import Message
-from app.models.site import Site, GetSitesResponse, GetSiteResponse
+from app.models.service_site import Site, GetSitesResponse, GetSiteResponse
 from app.models.user import User
 
 router = APIRouter(tags=["service site"])
@@ -23,31 +23,6 @@ router = APIRouter(tags=["service site"])
     response_description="Service sites retrived",
     summary="Get every service sites",
     response_model=GetSitesResponse,
-    responses={
-        status.HTTP_200_OK: {
-            "description": "Found a service site",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "response": [
-                            {
-                                "name": "service site 1",
-                                "location": "service site 1's location",
-                            },
-                            {
-                                "name": "service site 2",
-                                "location": "service site 2's location",
-                            },
-                            {
-                                "name": "service site 3",
-                                "location": "service site 3's location",
-                            },
-                        ]
-                    }
-                }
-            },
-        },
-    },
 )
 async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     """
@@ -78,16 +53,6 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     response_model=GetSiteResponse,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
-        status.HTTP_200_OK: {
-            "description": "Found a service site",
-            "content": {
-                "application/json": {
-                    "example": {
-                        "response": {"name": "service site", "location": "location"}
-                    }
-                }
-            },
-        },
     },
 )
 async def read_one_site(id: str):

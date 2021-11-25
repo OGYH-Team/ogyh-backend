@@ -1,10 +1,25 @@
+from os import lstat
 from typing import List, Dict, Optional
 from pydantic import BaseModel, Extra, create_model
 
 
+class Coordinates(BaseModel):
+    lat: float
+    lng: float
+
+
+class Location(BaseModel):
+    name: str
+    address: str
+    subdistrict: str
+    province: str
+    hours: str
+    coordinates: Coordinates
+
+
 class Site(BaseModel):
     name: str
-    location: str
+    location: Location
 
     class Config:
         extra = Extra.allow
