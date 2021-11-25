@@ -36,7 +36,6 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     if sites:
         site_paginator = Paginator(sites)
         site_paginator.paginate(page=page, limit=limit)
-
         return {"response": site_paginator.get_items()}
         # return {
         #     "response": {
@@ -74,7 +73,6 @@ async def read_one_site(id: str):
     response_description="Service site data added into the database",
     summary="Create a new service site",
     status_code=status.HTTP_201_CREATED,
-    response_model=Message,
     responses={
         status.HTTP_201_CREATED: {
             "description": "Create Successfull",
@@ -86,14 +84,14 @@ async def read_one_site(id: str):
         }
     },
 )
-async def add_site_data(site: Site, current_user: User = Depends(get_current_user)):
+async def add_site_data(request: Site, current_user: User = Depends(get_current_user)):
     """
     ## Create a new service site:
 
     - **name** : service site name
     - **location** : service site location
     """
-    result = dict(**site.dict())
+    result = dict(**request.dict())
     new_site = await add_site(result)
     return {"message": new_site}
 
