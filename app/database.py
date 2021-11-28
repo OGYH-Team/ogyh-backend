@@ -19,7 +19,7 @@ users_collection = db.get_collection("users")
 
 def site_helper(site) -> dict:
     """Return a dict that contain extracted cursor object."""
-    return {"id": str(site["_id"]), "name": site["name"], "location": site["location"]}
+    return {"id": str(site["_id"]), "name": site["name"], "location": site["location"], "capacity": site["capacity"]}
 
 
 async def retrive_sites():

@@ -1,6 +1,6 @@
 """Api router for service site."""
 from fastapi import APIRouter, HTTPException, status, Depends
-from typing import Optional
+from typing import Optional, List
 
 from app.utils.oauth2 import get_current_user
 from app.utils.paginator import Paginator
@@ -12,7 +12,7 @@ from app.database import (
     update_site,
 )
 from app.models.basic_model import Message
-from app.models.service_site import Site, GetSitesResponse, GetSiteResponse
+from app.models.service_site import Site
 from app.models.user import User
 
 router = APIRouter(tags=["service site"])
@@ -22,7 +22,7 @@ router = APIRouter(tags=["service site"])
     "/sites",
     response_description="Service sites retrived",
     summary="Get every service sites",
-    response_model=GetSitesResponse,
+    response_model=List[Site],
 )
 async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     """
@@ -36,7 +36,7 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     if sites:
         site_paginator = Paginator(sites)
         site_paginator.paginate(page=page, limit=limit)
-        return {"response": site_paginator.get_items()}
+        return site_paginator.get_items()
         # return {
         #     "response": {
         #         "page_data": site_paginator.get_page_data(),
@@ -49,7 +49,7 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
     "/site/{id}",
     response_description="Service site data retrived",
     summary="Get a service site info by id",
-    response_model=GetSiteResponse,
+    response_model=Site,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
     },
@@ -62,7 +62,7 @@ async def read_one_site(id: str):
     """
     site = await retrieve_site(id)
     if site:
-        return {"response": {"name": site["name"], "location": site["location"]}}
+        return Site(name=site["name"], location=site["location"], capacity=site["capacity"])
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="service site is not found"
     )
@@ -93,7 +93,7 @@ async def add_site_data(request: Site, current_user: User = Depends(get_current_
     """
     result = dict(**request.dict())
     new_site = await add_site(result)
-    return {"message": new_site}
+    return new_site
 
 
 @router.put(
@@ -103,18 +103,10 @@ async def add_site_data(request: Site, current_user: User = Depends(get_current_
     response_model=Message,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
-        status.HTTP_200_OK: {
-            "description": "Update Successfull",
-            "content": {
-                "application/json": {
-                    "example": {"response": "update id site_id success"}
-                }
-            },
-        },
     },
 )
 async def updated_site(
-    id: str, site: Site, current_user: User = Depends(get_current_user)
+    id: str, request: Site, current_user: User = Depends(get_current_user)
 ):
     """
     ## Update a service site information:
@@ -123,10 +115,10 @@ async def updated_site(
     - **name** : a new service site name
     - **location** : a new service site location
     """
-    new_value = dict(**site.dict())
+    new_value = dict(**request.dict())
     updated_site = await update_site(id, new_value)
     if updated_site:
-        return {"message": f"update {id} success"}
+        return Message(message=f"update {id} success")
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail=f"service site {id} not found"
     )
@@ -139,14 +131,6 @@ async def updated_site(
     response_model=Message,
     responses={
         status.HTTP_404_NOT_FOUND: {"model": Message, "description": "Not found"},
-        status.HTTP_200_OK: {
-            "description": "Remove Successfull",
-            "content": {
-                "application/json": {
-                    "example": {"response": "delete site id site_id success"}
-                }
-            },
-        },
     },
 )
 async def remove_site(id: str, current_user: User = Depends(get_current_user)):
@@ -157,7 +141,7 @@ async def remove_site(id: str, current_user: User = Depends(get_current_user)):
     """
     deleted_site = await delete_site(id)
     if deleted_site:
-        return {"message": f"delete site id {id} success"}
+        return Message(message=f"delete site id {id} success")
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail=f"service site {id} not found"
     )
