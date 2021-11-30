@@ -8,14 +8,13 @@ sample_reservations = [
             "name": "Elizabeth",
             "occupation": "hard support",
             "surname": "Reid",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610252054,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610252054,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1360190500,
         "citizen_data": {
             "address": "house",
@@ -24,14 +23,13 @@ sample_reservations = [
             "name": "Rachel",
             "occupation": "midlane",
             "surname": "Neal",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610039756,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610039756,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1580121369,
         "citizen_data": {
             "address": "house",
@@ -40,14 +38,13 @@ sample_reservations = [
             "name": "Carlos",
             "occupation": "hard support",
             "surname": "Luna",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609954711,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609954711,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1975096558,
         "citizen_data": {
             "address": "house",
@@ -56,14 +53,13 @@ sample_reservations = [
             "name": "Joshua",
             "occupation": "carry",
             "surname": "Brewer",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610270887,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610270887,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1576343463,
         "citizen_data": {
             "address": "house",
@@ -72,14 +68,13 @@ sample_reservations = [
             "name": "Katie",
             "occupation": "hard support",
             "surname": "Orozco",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610230480,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610230480,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1043113469,
         "citizen_data": {
             "address": "house",
@@ -88,14 +83,13 @@ sample_reservations = [
             "name": "Eric",
             "occupation": "soft support",
             "surname": "Marshall",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609742574,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609742574,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1752803929,
         "citizen_data": {
             "address": "house",
@@ -104,14 +98,13 @@ sample_reservations = [
             "name": "Matthew",
             "occupation": "offlane",
             "surname": "Callahan",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609741986,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609741986,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1321967870,
         "citizen_data": {
             "address": "house",
@@ -120,14 +113,13 @@ sample_reservations = [
             "name": "Jennifer",
             "occupation": "midlane",
             "surname": "Gonzalez",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609995179,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609995179,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1577056798,
         "citizen_data": {
             "address": "house",
@@ -136,14 +128,13 @@ sample_reservations = [
             "name": "Carlos",
             "occupation": "soft support",
             "surname": "Luna",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610184049,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610184049,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1971490240,
         "citizen_data": {
             "address": "house",
@@ -152,14 +143,13 @@ sample_reservations = [
             "name": "Mathew",
             "occupation": "hard support",
             "surname": "Brown",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610128377,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610128377,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1226118760,
         "citizen_data": {
             "address": "house",
@@ -168,14 +158,13 @@ sample_reservations = [
             "name": "Christopher",
             "occupation": "carry",
             "surname": "Price",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610056405,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610056405,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1600712459,
         "citizen_data": {
             "address": "house",
@@ -184,14 +173,13 @@ sample_reservations = [
             "name": "Juan",
             "occupation": "hard support",
             "surname": "Ibarra",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610427250,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610427250,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1552777884,
         "citizen_data": {
             "address": "house",
@@ -200,14 +188,13 @@ sample_reservations = [
             "name": "Russell",
             "occupation": "carry",
             "surname": "Pena",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609846800,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609846800,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1804393900,
         "citizen_data": {
             "address": "house",
@@ -216,14 +203,13 @@ sample_reservations = [
             "name": "Ronnie",
             "occupation": "hard support",
             "surname": "Wolfe",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610421855,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610421855,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1468508253,
         "citizen_data": {
             "address": "house",
@@ -232,14 +218,13 @@ sample_reservations = [
             "name": "Mary",
             "occupation": "offlane",
             "surname": "Finley",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609753511,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609753511,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1439318908,
         "citizen_data": {
             "address": "house",
@@ -248,14 +233,13 @@ sample_reservations = [
             "name": "John",
             "occupation": "soft support",
             "surname": "Houston",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610199402,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610199402,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1274417254,
         "citizen_data": {
             "address": "house",
@@ -264,14 +248,13 @@ sample_reservations = [
             "name": "Krystal",
             "occupation": "soft support",
             "surname": "Anderson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609797074,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609797074,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1472644519,
         "citizen_data": {
             "address": "house",
@@ -280,14 +263,13 @@ sample_reservations = [
             "name": "Randy",
             "occupation": "carry",
             "surname": "Young",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609916237,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609916237,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1989593168,
         "citizen_data": {
             "address": "house",
@@ -296,14 +278,13 @@ sample_reservations = [
             "name": "Brandon",
             "occupation": "soft support",
             "surname": "Soto",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609896810,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609896810,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1114338824,
         "citizen_data": {
             "address": "house",
@@ -312,14 +293,13 @@ sample_reservations = [
             "name": "Nicholas",
             "occupation": "carry",
             "surname": "Walker",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610262506,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610262506,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1362825641,
         "citizen_data": {
             "address": "house",
@@ -328,14 +308,13 @@ sample_reservations = [
             "name": "Justin",
             "occupation": "carry",
             "surname": "Rodgers",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610356962,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610356962,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1154816092,
         "citizen_data": {
             "address": "house",
@@ -344,14 +323,13 @@ sample_reservations = [
             "name": "Brian",
             "occupation": "hard support",
             "surname": "Ryan",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610408595,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610408595,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1032455806,
         "citizen_data": {
             "address": "house",
@@ -360,14 +338,13 @@ sample_reservations = [
             "name": "Christopher",
             "occupation": "offlane",
             "surname": "Moran",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610110904,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610110904,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1912217200,
         "citizen_data": {
             "address": "house",
@@ -376,14 +353,13 @@ sample_reservations = [
             "name": "Amy",
             "occupation": "midlane",
             "surname": "Hull",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610272142,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610272142,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1687188072,
         "citizen_data": {
             "address": "house",
@@ -392,14 +368,13 @@ sample_reservations = [
             "name": "Maria",
             "occupation": "midlane",
             "surname": "Merritt",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609959954,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609959954,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1037816769,
         "citizen_data": {
             "address": "house",
@@ -408,14 +383,13 @@ sample_reservations = [
             "name": "Nathaniel",
             "occupation": "soft support",
             "surname": "Owen",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610416984,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610416984,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1360636557,
         "citizen_data": {
             "address": "house",
@@ -424,14 +398,13 @@ sample_reservations = [
             "name": "Heather",
             "occupation": "carry",
             "surname": "Smith",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610172148,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610172148,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1911595592,
         "citizen_data": {
             "address": "house",
@@ -440,14 +413,13 @@ sample_reservations = [
             "name": "Nicholas",
             "occupation": "hard support",
             "surname": "Mendoza",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610429701,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610429701,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1356614844,
         "citizen_data": {
             "address": "house",
@@ -456,14 +428,13 @@ sample_reservations = [
             "name": "Nichole",
             "occupation": "carry",
             "surname": "Gentry",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610371622,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610371622,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1543146068,
         "citizen_data": {
             "address": "house",
@@ -472,14 +443,13 @@ sample_reservations = [
             "name": "Heather",
             "occupation": "hard support",
             "surname": "Schmidt",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610036313,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610036313,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1301962693,
         "citizen_data": {
             "address": "house",
@@ -488,14 +458,13 @@ sample_reservations = [
             "name": "David",
             "occupation": "carry",
             "surname": "Moore",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610307162,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610307162,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1588419957,
         "citizen_data": {
             "address": "house",
@@ -504,14 +473,13 @@ sample_reservations = [
             "name": "Matthew",
             "occupation": "hard support",
             "surname": "Hughes",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610016469,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610016469,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1853261835,
         "citizen_data": {
             "address": "house",
@@ -520,14 +488,13 @@ sample_reservations = [
             "name": "Robert",
             "occupation": "soft support",
             "surname": "Welch",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610298181,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610298181,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1292038410,
         "citizen_data": {
             "address": "house",
@@ -536,14 +503,13 @@ sample_reservations = [
             "name": "Zachary",
             "occupation": "carry",
             "surname": "Todd",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609814224,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609814224,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1018923012,
         "citizen_data": {
             "address": "house",
@@ -552,14 +518,13 @@ sample_reservations = [
             "name": "Michael",
             "occupation": "offlane",
             "surname": "Allen",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610267417,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610267417,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1768544055,
         "citizen_data": {
             "address": "house",
@@ -568,14 +533,13 @@ sample_reservations = [
             "name": "Kevin",
             "occupation": "soft support",
             "surname": "Richardson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610330601,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610330601,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1569675917,
         "citizen_data": {
             "address": "house",
@@ -584,14 +548,13 @@ sample_reservations = [
             "name": "Christina",
             "occupation": "hard support",
             "surname": "Smith",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610098268,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610098268,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1695035775,
         "citizen_data": {
             "address": "house",
@@ -600,14 +563,13 @@ sample_reservations = [
             "name": "Jennifer",
             "occupation": "hard support",
             "surname": "Lowe",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610258495,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610258495,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1088241913,
         "citizen_data": {
             "address": "house",
@@ -616,14 +578,13 @@ sample_reservations = [
             "name": "Tina",
             "occupation": "carry",
             "surname": "Howard",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610114924,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610114924,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1747879793,
         "citizen_data": {
             "address": "house",
@@ -632,14 +593,13 @@ sample_reservations = [
             "name": "Bethany",
             "occupation": "carry",
             "surname": "Sanchez",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610402379,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610402379,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1360416578,
         "citizen_data": {
             "address": "house",
@@ -648,14 +608,13 @@ sample_reservations = [
             "name": "Bobby",
             "occupation": "offlane",
             "surname": "Greer",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609853962,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609853962,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1100960747,
         "citizen_data": {
             "address": "house",
@@ -664,14 +623,13 @@ sample_reservations = [
             "name": "Mark",
             "occupation": "midlane",
             "surname": "Sharp",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609856128,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609856128,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1168572604,
         "citizen_data": {
             "address": "house",
@@ -680,14 +638,13 @@ sample_reservations = [
             "name": "William",
             "occupation": "midlane",
             "surname": "Ford",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610345071,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610345071,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1844940259,
         "citizen_data": {
             "address": "house",
@@ -696,14 +653,13 @@ sample_reservations = [
             "name": "Jonathan",
             "occupation": "midlane",
             "surname": "Miller",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609785718,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609785718,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1472492351,
         "citizen_data": {
             "address": "house",
@@ -712,14 +668,13 @@ sample_reservations = [
             "name": "Edward",
             "occupation": "offlane",
             "surname": "Vega",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610072877,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610072877,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1540447228,
         "citizen_data": {
             "address": "house",
@@ -728,14 +683,13 @@ sample_reservations = [
             "name": "Haley",
             "occupation": "hard support",
             "surname": "Finley",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610238645,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610238645,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1186611877,
         "citizen_data": {
             "address": "house",
@@ -744,14 +698,13 @@ sample_reservations = [
             "name": "Logan",
             "occupation": "soft support",
             "surname": "Mcclain",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609781316,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609781316,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1105983326,
         "citizen_data": {
             "address": "house",
@@ -760,14 +713,13 @@ sample_reservations = [
             "name": "Carmen",
             "occupation": "midlane",
             "surname": "Phillips",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610351685,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610351685,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1763692510,
         "citizen_data": {
             "address": "house",
@@ -776,14 +728,13 @@ sample_reservations = [
             "name": "Rachel",
             "occupation": "carry",
             "surname": "Blair",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609916881,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609916881,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1738184331,
         "citizen_data": {
             "address": "house",
@@ -792,14 +743,13 @@ sample_reservations = [
             "name": "Kevin",
             "occupation": "offlane",
             "surname": "Smith",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609931831,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609931831,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1033760400,
         "citizen_data": {
             "address": "house",
@@ -808,14 +758,13 @@ sample_reservations = [
             "name": "Jay",
             "occupation": "carry",
             "surname": "Mcdonald",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610010169,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610010169,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1036724503,
         "citizen_data": {
             "address": "house",
@@ -824,14 +773,13 @@ sample_reservations = [
             "name": "Christian",
             "occupation": "soft support",
             "surname": "Harrison",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610306170,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610306170,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1050120862,
         "citizen_data": {
             "address": "house",
@@ -840,14 +788,13 @@ sample_reservations = [
             "name": "Kaylee",
             "occupation": "offlane",
             "surname": "Stewart",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609840800,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609840800,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1992449610,
         "citizen_data": {
             "address": "house",
@@ -856,14 +803,13 @@ sample_reservations = [
             "name": "Mary",
             "occupation": "hard support",
             "surname": "Evans",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610074963,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610074963,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1070331729,
         "citizen_data": {
             "address": "house",
@@ -872,14 +818,13 @@ sample_reservations = [
             "name": "Charlene",
             "occupation": "offlane",
             "surname": "Greene",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609796220,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609796220,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1611348314,
         "citizen_data": {
             "address": "house",
@@ -888,14 +833,13 @@ sample_reservations = [
             "name": "Jennifer",
             "occupation": "midlane",
             "surname": "Richardson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610216432,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610216432,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1546150392,
         "citizen_data": {
             "address": "house",
@@ -904,14 +848,13 @@ sample_reservations = [
             "name": "Carlos",
             "occupation": "offlane",
             "surname": "Barnes",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610392496,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610392496,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1163031784,
         "citizen_data": {
             "address": "house",
@@ -920,14 +863,13 @@ sample_reservations = [
             "name": "Daisy",
             "occupation": "soft support",
             "surname": "Jackson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610269649,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610269649,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1971806813,
         "citizen_data": {
             "address": "house",
@@ -936,14 +878,13 @@ sample_reservations = [
             "name": "Tara",
             "occupation": "midlane",
             "surname": "Johnson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609915709,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609915709,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1904910486,
         "citizen_data": {
             "address": "house",
@@ -952,14 +893,13 @@ sample_reservations = [
             "name": "Mindy",
             "occupation": "hard support",
             "surname": "Jarvis",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610271088,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610271088,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1231407063,
         "citizen_data": {
             "address": "house",
@@ -968,14 +908,13 @@ sample_reservations = [
             "name": "Kelsey",
             "occupation": "hard support",
             "surname": "Anderson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609932580,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609932580,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1038489883,
         "citizen_data": {
             "address": "house",
@@ -984,14 +923,13 @@ sample_reservations = [
             "name": "Melissa",
             "occupation": "soft support",
             "surname": "Johnson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609737168,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609737168,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1746425904,
         "citizen_data": {
             "address": "house",
@@ -1000,14 +938,13 @@ sample_reservations = [
             "name": "Sydney",
             "occupation": "hard support",
             "surname": "Perez",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609969454,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609969454,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1453139903,
         "citizen_data": {
             "address": "house",
@@ -1016,14 +953,13 @@ sample_reservations = [
             "name": "Daniel",
             "occupation": "hard support",
             "surname": "Fernandez",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609922499,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609922499,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1106091755,
         "citizen_data": {
             "address": "house",
@@ -1032,14 +968,13 @@ sample_reservations = [
             "name": "Tamara",
             "occupation": "carry",
             "surname": "Bowman",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610253254,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610253254,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1691809691,
         "citizen_data": {
             "address": "house",
@@ -1048,14 +983,13 @@ sample_reservations = [
             "name": "Christopher",
             "occupation": "carry",
             "surname": "Smith",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610120937,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610120937,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1428900920,
         "citizen_data": {
             "address": "house",
@@ -1064,14 +998,13 @@ sample_reservations = [
             "name": "Cody",
             "occupation": "midlane",
             "surname": "Oconnell",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610012814,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610012814,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1778987873,
         "citizen_data": {
             "address": "house",
@@ -1080,14 +1013,13 @@ sample_reservations = [
             "name": "Joel",
             "occupation": "soft support",
             "surname": "Robinson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610204826,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610204826,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1321847439,
         "citizen_data": {
             "address": "house",
@@ -1096,14 +1028,13 @@ sample_reservations = [
             "name": "Faith",
             "occupation": "carry",
             "surname": "Tucker",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609828470,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609828470,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1864067275,
         "citizen_data": {
             "address": "house",
@@ -1112,14 +1043,13 @@ sample_reservations = [
             "name": "Samantha",
             "occupation": "midlane",
             "surname": "Shields",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610403860,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610403860,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1860748884,
         "citizen_data": {
             "address": "house",
@@ -1128,14 +1058,13 @@ sample_reservations = [
             "name": "Angela",
             "occupation": "soft support",
             "surname": "Smith",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609845845,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609845845,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1270677340,
         "citizen_data": {
             "address": "house",
@@ -1144,14 +1073,13 @@ sample_reservations = [
             "name": "Melissa",
             "occupation": "carry",
             "surname": "Morris",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609719568,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609719568,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1777861465,
         "citizen_data": {
             "address": "house",
@@ -1160,14 +1088,13 @@ sample_reservations = [
             "name": "Jonathan",
             "occupation": "carry",
             "surname": "Lewis",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609811561,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609811561,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1107824894,
         "citizen_data": {
             "address": "house",
@@ -1176,14 +1103,13 @@ sample_reservations = [
             "name": "Colleen",
             "occupation": "soft support",
             "surname": "Carey",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609734842,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609734842,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1214485145,
         "citizen_data": {
             "address": "house",
@@ -1192,14 +1118,13 @@ sample_reservations = [
             "name": "Sandra",
             "occupation": "soft support",
             "surname": "Boyd",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610043750,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610043750,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1867586291,
         "citizen_data": {
             "address": "house",
@@ -1208,14 +1133,13 @@ sample_reservations = [
             "name": "Michael",
             "occupation": "offlane",
             "surname": "Griffin",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609863260,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609863260,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1185769336,
         "citizen_data": {
             "address": "house",
@@ -1224,14 +1148,13 @@ sample_reservations = [
             "name": "Jennifer",
             "occupation": "midlane",
             "surname": "Alvarado",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609855545,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609855545,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1163975940,
         "citizen_data": {
             "address": "house",
@@ -1240,14 +1163,13 @@ sample_reservations = [
             "name": "Brenda",
             "occupation": "offlane",
             "surname": "Jones",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609788640,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609788640,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1694760728,
         "citizen_data": {
             "address": "house",
@@ -1256,14 +1178,13 @@ sample_reservations = [
             "name": "Hayden",
             "occupation": "carry",
             "surname": "Conner",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609972972,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609972972,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1197158287,
         "citizen_data": {
             "address": "house",
@@ -1272,14 +1193,13 @@ sample_reservations = [
             "name": "Matthew",
             "occupation": "offlane",
             "surname": "Tran",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610133971,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610133971,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1792680275,
         "citizen_data": {
             "address": "house",
@@ -1288,14 +1208,13 @@ sample_reservations = [
             "name": "Adrian",
             "occupation": "offlane",
             "surname": "Walker",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610341163,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610341163,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1547802924,
         "citizen_data": {
             "address": "house",
@@ -1304,14 +1223,13 @@ sample_reservations = [
             "name": "Sarah",
             "occupation": "soft support",
             "surname": "Hayes",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609994865,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609994865,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1719592778,
         "citizen_data": {
             "address": "house",
@@ -1320,14 +1238,13 @@ sample_reservations = [
             "name": "Jasmin",
             "occupation": "soft support",
             "surname": "Bishop",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610280138,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610280138,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1430653354,
         "citizen_data": {
             "address": "house",
@@ -1336,14 +1253,13 @@ sample_reservations = [
             "name": "Heather",
             "occupation": "carry",
             "surname": "Moore",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609798778,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609798778,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1964807849,
         "citizen_data": {
             "address": "house",
@@ -1352,14 +1268,13 @@ sample_reservations = [
             "name": "Marvin",
             "occupation": "carry",
             "surname": "Davis",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610311277,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610311277,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1630774512,
         "citizen_data": {
             "address": "house",
@@ -1368,14 +1283,13 @@ sample_reservations = [
             "name": "Paul",
             "occupation": "offlane",
             "surname": "Dominguez",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610033126,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610033126,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1459712373,
         "citizen_data": {
             "address": "house",
@@ -1384,14 +1298,13 @@ sample_reservations = [
             "name": "Heather",
             "occupation": "hard support",
             "surname": "Charles",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610397855,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610397855,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1588354921,
         "citizen_data": {
             "address": "house",
@@ -1400,14 +1313,13 @@ sample_reservations = [
             "name": "Daniel",
             "occupation": "hard support",
             "surname": "Moore",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609813080,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609813080,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1699970711,
         "citizen_data": {
             "address": "house",
@@ -1416,14 +1328,13 @@ sample_reservations = [
             "name": "Elizabeth",
             "occupation": "carry",
             "surname": "Schultz",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610418776,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610418776,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1160014675,
         "citizen_data": {
             "address": "house",
@@ -1432,14 +1343,13 @@ sample_reservations = [
             "name": "Charles",
             "occupation": "midlane",
             "surname": "Osborne",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609839600,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609839600,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1019261518,
         "citizen_data": {
             "address": "house",
@@ -1448,14 +1358,13 @@ sample_reservations = [
             "name": "Bryan",
             "occupation": "hard support",
             "surname": "Webb",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610231946,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610231946,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1047456658,
         "citizen_data": {
             "address": "house",
@@ -1464,14 +1373,13 @@ sample_reservations = [
             "name": "Joshua",
             "occupation": "hard support",
             "surname": "Robinson",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609817787,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609817787,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1012082764,
         "citizen_data": {
             "address": "house",
@@ -1480,14 +1388,13 @@ sample_reservations = [
             "name": "Karen",
             "occupation": "midlane",
             "surname": "Hughes",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1610362961,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1610362961,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1812420388,
         "citizen_data": {
             "address": "house",
@@ -1496,14 +1403,13 @@ sample_reservations = [
             "name": "David",
             "occupation": "offlane",
             "surname": "Bryant",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH2",
-        "timestamp":1609761446,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH2",
+        "timestamp": 1609761446,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1271743979,
         "citizen_data": {
             "address": "house",
@@ -1512,14 +1418,13 @@ sample_reservations = [
             "name": "Robert",
             "occupation": "hard support",
             "surname": "Ruiz",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1609836047,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1609836047,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1387545620,
         "citizen_data": {
             "address": "house",
@@ -1528,14 +1433,13 @@ sample_reservations = [
             "name": "Angela",
             "occupation": "offlane",
             "surname": "Williams",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1610404297,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1610404297,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1484428761,
         "citizen_data": {
             "address": "house",
@@ -1544,14 +1448,13 @@ sample_reservations = [
             "name": "Michael",
             "occupation": "hard support",
             "surname": "Mora",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610127020,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610127020,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1195326430,
         "citizen_data": {
             "address": "house",
@@ -1560,14 +1463,13 @@ sample_reservations = [
             "name": "Anthony",
             "occupation": "soft support",
             "surname": "Mullins",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH1",
-        "timestamp":1610278662,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH1",
+        "timestamp": 1610278662,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1259493071,
         "citizen_data": {
             "address": "house",
@@ -1576,14 +1478,13 @@ sample_reservations = [
             "name": "David",
             "occupation": "carry",
             "surname": "Colon",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609907599,
-        "queue":"None"
-    }, {
+        "site_name": "OGYH3",
+        "timestamp": 1609907599,
+        "queue": "None",
+    },
+    {
         "citizen_id": 1411941459,
         "citizen_data": {
             "address": "house",
@@ -1592,12 +1493,10 @@ sample_reservations = [
             "name": "Kyle",
             "occupation": "midlane",
             "surname": "Montoya",
-            "vaccine_taken": [
-
-            ]
+            "vaccine_taken": [],
         },
-        "site_name":"OGYH3",
-        "timestamp":1609929834,
-        "queue":"None"
-    }
+        "site_name": "OGYH3",
+        "timestamp": 1609929834,
+        "queue": "None",
+    },
 ]

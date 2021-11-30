@@ -60,7 +60,6 @@ example_reservation = {
     },
 }
 
-example_get_reservations = {"response": {
-    "reservations": [example_reservation]}}
+example_get_reservations = {"response": {"reservations": [example_reservation]}}
 
 example_get_reservation = {"reservation": example_reservation}
