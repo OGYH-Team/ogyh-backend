@@ -1,9 +1,9 @@
 import requests
 
 
-def fetch_url(URL):
+def fetch_url(URL, token=""):
     """Return a data that fetch from given url."""
-    r = requests.get(URL)
+    r = requests.get(URL, headers={'Authorization': 'Bearer {}'.format(token)})
     DATA = r.json()
     return DATA
 
