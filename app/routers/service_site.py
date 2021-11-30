@@ -63,7 +63,10 @@ async def read_one_site(id: str):
     site = await retrieve_site(id)
     if site:
         return Site(
-            id =site["id"], name=site["name"], location=site["location"], capacity=site["capacity"]
+            id=site["id"],
+            name=site["name"],
+            location=site["location"],
+            capacity=site["capacity"],
         )
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="service site is not found"
@@ -86,7 +89,9 @@ async def read_one_site(id: str):
         }
     },
 )
-async def add_site_data(request: UpdateSite, current_user: User = Depends(get_current_user)):
+async def add_site_data(
+    request: UpdateSite, current_user: User = Depends(get_current_user)
+):
     """
     ## Create a new service site:
 

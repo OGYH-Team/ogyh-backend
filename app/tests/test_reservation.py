@@ -11,7 +11,11 @@ class TestReservation(asynctest.TestCase):
         """Create a valid citizen and create a reservation."""
         url = "https://wcg-apis-test.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
-        requests.post(url, params=self.citizen, headers={"Authorization": "Bearer {}".format(self.access_token)})
+        requests.post(
+            url,
+            params=self.citizen,
+            headers={"Authorization": "Bearer {}".format(self.access_token)},
+        )
         url = "https://wcg-apis-test.herokuapp.com/reservation"
         site_name = "TEST"
         requests.delete(f"{url}/{citizen_id}")
@@ -21,9 +25,9 @@ class TestReservation(asynctest.TestCase):
                 "citizen_id": citizen_id,
                 "site_name": site_name,
                 "vaccine_name": "Astra",
-            },headers={"Authorization": "Bearer {}".format(self.access_token)}
+            },
+            headers={"Authorization": "Bearer {}".format(self.access_token)},
         )
-
 
     async def setUp(self) -> None:
         self.queue = asyncio.Queue(maxsize=1)
@@ -31,7 +35,7 @@ class TestReservation(asynctest.TestCase):
         self.base_url = "/api"
         self.site_id = "61a675cdcdfc0e87ab74b90d"
         self.citizen = {
-            "citizen_id": "1110394059403",
+            "citizen_id": "1110394059402",
             "name": "name1",
             "surname": "surname1",
             "birth_date": "11-11-2000",
@@ -50,7 +54,8 @@ class TestReservation(asynctest.TestCase):
         """Test retrive all the valid reservation."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{self.site_id}/reservations", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{self.site_id}/reservations",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             self.assertEqual(200, responses.status_code)
 
@@ -59,7 +64,9 @@ class TestReservation(asynctest.TestCase):
         page = {"limit": 10, "page": 1}
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{self.site_id}/reservations", params=page, headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{self.site_id}/reservations",
+                params=page,
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
@@ -73,7 +80,9 @@ class TestReservation(asynctest.TestCase):
         }  # the negative would be convert to 0 automatically
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{self.site_id}/reservations", params=page, headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{self.site_id}/reservations",
+                params=page,
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             print(responses.json())
             self.assertEqual(200, responses.status_code)
@@ -85,8 +94,10 @@ class TestReservation(asynctest.TestCase):
         citizen_id = self.citizen["citizen_id"]
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{self.site_id}/reservation/{citizen_id}", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{self.site_id}/reservation/{citizen_id}",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
+            print(responses.text)
             self.assertEqual(200, responses.status_code)
 
     async def test_get_invalid_citizen_reservation(self):
@@ -94,7 +105,8 @@ class TestReservation(asynctest.TestCase):
         citizen_id = "11034031341243"
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{self.site_id}/reservation/{citizen_id}", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{self.site_id}/reservation/{citizen_id}",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             self.assertEqual(404, responses.status_code)
 
@@ -104,7 +116,8 @@ class TestReservation(asynctest.TestCase):
         service_site = "111111111111111111111111"
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{service_site}/reservation/{citizen_id}", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{service_site}/reservation/{citizen_id}",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             content = responses.json()
             self.assertEqual(404, responses.status_code)
@@ -115,7 +128,8 @@ class TestReservation(asynctest.TestCase):
         service_site = "111111111111111111111111"
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{service_site}/reservations", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{service_site}/reservations",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             self.assertEqual(404, responses.status_code)
 
@@ -124,7 +138,8 @@ class TestReservation(asynctest.TestCase):
         service_site = "6179113760e255455240052b"
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
-                f"{self.base_url}/site/{service_site}/reservations", headers={"Authorization": "Bearer {}".format(self.access_token)}
+                f"{self.base_url}/site/{service_site}/reservations",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
             content = responses.json()
             self.assertEqual(

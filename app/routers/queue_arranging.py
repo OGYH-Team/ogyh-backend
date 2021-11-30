@@ -75,7 +75,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     delta_time = 5
     time_slot_size = service_site.capacity / len(time_str)
     current_date = datetime.today().strftime(time_format)
-    date = (datetime.strptime(current_date,time_format) + timedelta(days=delta_time))
+    date = datetime.strptime(current_date, time_format) + timedelta(days=delta_time)
     date_string = date.strftime(time_format)
     all_time_slots.append(
         {
@@ -93,7 +93,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
 
             time_str_index += 1
-            queue = (date + timedelta(hours=10, minutes=30*time_str_index)).strftime(
+            queue = (date + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
             )
             if time_str_index == len(time_str):
@@ -101,25 +101,39 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
                 delta_time += 1
 
             reservation.update({"queue": queue})
-            report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
-            res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+            report = {
+                "citizen_id": reservation["citizen_id"],
+                "queue": reservation["queue"],
+            }
+            res = requests.post(
+                "https://wcg-apis-test.herokuapp.com/queue_report",
+                params=report,
+                headers={"Authorization": "Bearer {}".format(access_token)},
+            )
             all_time_slots.append(
                 {
                     "service_site": service_site.name,
                     "time_str": time_str[time_str_index],
-                    "date": (date+timedelta(days=delta_time)).strftime(time_format),
+                    "date": (date + timedelta(days=delta_time)).strftime(time_format),
                     "reservations": [reservation],
                 }
             )
             time_slot_index += 1
 
         else:
-            queue = (date + timedelta(hours=10, minutes=30*time_str_index)).strftime(
+            queue = (date + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
             )
             reservation.update({"queue": queue})
-            report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
-            res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+            report = {
+                "citizen_id": reservation["citizen_id"],
+                "queue": reservation["queue"],
+            }
+            res = requests.post(
+                "https://wcg-apis-test.herokuapp.com/queue_report",
+                params=report,
+                headers={"Authorization": "Bearer {}".format(access_token)},
+            )
 
             all_time_slots[time_slot_index]["reservations"].append(reservation)
         count_reservation += 1
@@ -161,14 +175,18 @@ async def read_walk_in(site_id: str):
     service_site = await read_one_site(site_id)
     count = 0
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
-        total_reservation = len(time_slot["reservations"])
-        count += total_reservation
+        for reservation in time_slot["reservations"]:
+            count += 1
+
     return {
         "response": {
             "service_site": service_site,
-            "remaning": service_site.capacity - count,
+            "remaining": service_site.capacity - count
+            if service_site.capacity <= count
+            else 0,
         }
     }
+
 
 @router.post("/report")
 async def send_report(request: CitizenToReport, site_id: str):
@@ -183,10 +201,18 @@ async def send_report(request: CitizenToReport, site_id: str):
             if reservation["citizen_id"] in request.citizen_ids:
                 to_report_list.append(reservation)
     for reservation in to_report_list:
-        report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
-        res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+        report = {
+            "citizen_id": reservation["citizen_id"],
+            "queue": reservation["queue"],
+        }
+        res = requests.post(
+            "https://wcg-apis-test.herokuapp.com/queue_report",
+            params=report,
+            headers={"Authorization": "Bearer {}".format(access_token)},
+        )
 
     return Message(message=f"report {len(to_report_list)} reservations success")
+
 
 @router.post("/report-taken")
 async def send_vaccinated_report(request: CitizenToReport, site_id: str):
@@ -201,6 +227,14 @@ async def send_vaccinated_report(request: CitizenToReport, site_id: str):
             if reservation["citizen_id"] in request.citizen_ids:
                 to_report_list.append(reservation)
     for reservation in to_report_list:
-        report = {"citizen_id": reservation["citizen_id"], "vaccine_name": reservation["vaccine_name"], "option": "reserve"}
-        res = requests.post("https://wcg-apis-test.herokuapp.com/report_taken", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+        report = {
+            "citizen_id": reservation["citizen_id"],
+            "vaccine_name": reservation["vaccine_name"],
+            "option": "reserve",
+        }
+        res = requests.post(
+            "https://wcg-apis-test.herokuapp.com/report_taken",
+            params=report,
+            headers={"Authorization": "Bearer {}".format(access_token)},
+        )
     return Message(message=f"report {len(to_report_list)} reservations success")

@@ -95,7 +95,7 @@ class TestServiceSite(asynctest.TestCase):
             self.assertEqual(200, responses.status_code)
             responses = await ac.get(f"{self.base_url}/site/{self.valid_site_id}")
             content = responses.json()
-            del content["id"] # we don't object id at first
+            del content["id"]  # we don't object id at first
             self.assertEqual(self.valid_service_site, content)
 
     async def test_update_invalid_service_site(self):

@@ -112,7 +112,7 @@ async def read_users_reservation(
     except bson.errors.InvalidId:
         message = f"Service site id {site_id} is invalid"
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
-
+    print(site)
     if site:
         search_site = get_service_site_avaliable(
             data=user_data_by_site_name, key=site["name"]
