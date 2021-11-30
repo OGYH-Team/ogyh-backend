@@ -48,7 +48,7 @@ async def read_users_reservations(
     )
     access_token = res.json()["access_token"]
     user_data = fetch_url(
-        "https://wcg-apis.herokuapp.com/reservations", token=access_token
+        "https://wcg-apis-test.herokuapp.com/reservations", token=access_token
     )
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
     try:
