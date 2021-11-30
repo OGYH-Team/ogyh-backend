@@ -11,8 +11,7 @@ from app.models.basic_model import Message
 from bson.objectid import ObjectId
 from typing import Optional
 
-router = APIRouter(
-    prefix="/site/{site_id}/queues", tags=["vaccine reservation"])
+router = APIRouter(prefix="/site/{site_id}/queues", tags=["vaccine reservation"])
 
 time_str = [
     "10:00-10:30",
@@ -41,8 +40,10 @@ async def read_time_slots(site_id: str, date: Optional[str] = ""):
         all_time_slots.append({**time_slot, "_id": str(time_slot["_id"])})
 
     if len(all_time_slots) < 1:
-        raise HTTPException(status_code=HTTP_404_NOT_FOUND,
-                            detail=f"Time slots in {site_id} is not found")
+        raise HTTPException(
+            status_code=HTTP_404_NOT_FOUND,
+            detail=f"Time slots in {site_id} is not found",
+        )
 
     if date:
         selected_date = datetime.strptime(date, time_format)
@@ -72,15 +73,17 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
             "service_site": service_site.name,
             "time_str": "10:00-10:30",
             "date": "2021/11/20",
-            "reservations": []}
+            "reservations": [],
+        }
     )
     count_reservation = 0
     for reservation in reservations:
         if count_reservation == service_site.capacity:
             break
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
-            queue = (date + timedelta(hours=10, minutes=30)
-                     ).strftime("%Y-%m-%d %H:%M:%S.%f")
+            queue = (date + timedelta(hours=10, minutes=30)).strftime(
+                "%Y-%m-%d %H:%M:%S.%f"
+            )
             reservation.update({"queue": queue})
             time_str_index += 1
             if time_str_index == len(time_str):
@@ -102,7 +105,14 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     try:
         async for time_slot in db.time_slots.find({"service_site": service_site.name}):
             if datetime.strptime(time_slot["date"], time_format) == date:
-                await db.time_slots.delete_many({"service_site": service_site.name, "date": (date + timedelta(days=delta_time)).strftime(time_format)})
+                await db.time_slots.delete_many(
+                    {
+                        "service_site": service_site.name,
+                        "date": (date + timedelta(days=delta_time)).strftime(
+                            time_format
+                        ),
+                    }
+                )
         for time_slot in all_time_slots:
             await db.time_slots.insert_one(time_slot)
         if count_reservation > service_site.capacity:
@@ -113,13 +123,18 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
 
 
 @router.delete("/{time_slot_id}", response_model=Message)
-async def destroy_time_slot(site_id: str, time_slot_id: str, current_user: User = Depends(get_current_user)):
+async def destroy_time_slot(
+    site_id: str, time_slot_id: str, current_user: User = Depends(get_current_user)
+):
     time_slot = db.time_slots.find_one({"_id": ObjectId(time_slot_id)})
     if time_slot:
         await db.time_slots.delete_one({"_id": ObjectId(time_slot_id)})
-        return Message(message=f"remove time slot id {time_slot_id} from site id {site_id} success")
-    raise HTTPException(status_code=HTTP_404_NOT_FOUND,
-                        detail=f"time slot id {time_slot_id} not found")
+        return Message(
+            message=f"remove time slot id {time_slot_id} from site id {site_id} success"
+        )
+    raise HTTPException(
+        status_code=HTTP_404_NOT_FOUND, detail=f"time slot id {time_slot_id} not found"
+    )
 
 
 @router.get("/walkin")
@@ -129,8 +144,9 @@ async def read_walk_in(site_id: str):
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
         total_reservation = len(time_slot["reservations"])
         count += total_reservation
-    return {"response": {
-        "service_site": service_site,
-        "remaning": count - service_site.capacity
-
-    }}
+    return {
+        "response": {
+            "service_site": service_site,
+            "remaning": count - service_site.capacity,
+        }
+    }

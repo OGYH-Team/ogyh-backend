@@ -62,7 +62,9 @@ async def read_one_site(id: str):
     """
     site = await retrieve_site(id)
     if site:
-        return Site(name=site["name"], location=site["location"], capacity=site["capacity"])
+        return Site(
+            name=site["name"], location=site["location"], capacity=site["capacity"]
+        )
     raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND, detail="service site is not found"
     )

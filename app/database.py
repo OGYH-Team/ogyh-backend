@@ -2,7 +2,6 @@ from bson.objectid import ObjectId
 from motor.motor_asyncio import (
     AsyncIOMotorClient as MotorClient,
 )
-import motor.motor_asyncio
 import os
 import asyncio
 
@@ -19,7 +18,12 @@ users_collection = db.get_collection("users")
 
 def site_helper(site) -> dict:
     """Return a dict that contain extracted cursor object."""
-    return {"id": str(site["_id"]), "name": site["name"], "location": site["location"], "capacity": site["capacity"]}
+    return {
+        "id": str(site["_id"]),
+        "name": site["name"],
+        "location": site["location"],
+        "capacity": site["capacity"],
+    }
 
 
 async def retrive_sites():

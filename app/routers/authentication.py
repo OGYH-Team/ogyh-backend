@@ -1,9 +1,7 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
-from starlette.routing import request_response
 from app.models.authentication import LoginResponse
 from app.models.basic_model import Message
-from app.models.token import Token
 from app.models.user import User
 from app.database import retrieve_user, retrieve_password
 from app.utils.hashing import Hash
@@ -32,7 +30,7 @@ async def login(request: OAuth2PasswordRequestForm = Depends()):
     - **password** : your valid password.
 
     Keys in the request body are auto-generated from **OAuth2PasswordRequestForm**.
-    """   
+    """
     user = await retrieve_user(request.username)
     if not user:
         raise HTTPException(

@@ -3,7 +3,7 @@ import requests
 
 def fetch_url(URL, token=""):
     """Return a data that fetch from given url."""
-    r = requests.get(URL, headers={'Authorization': 'Bearer {}'.format(token)})
+    r = requests.get(URL, headers={"Authorization": "Bearer {}".format(token)})
     DATA = r.json()
     return DATA
 
@@ -13,7 +13,7 @@ def arranging_reservation_by_site_name(DATA):
 
     reservations = {}
     for item in DATA:
-        site_name_key = item['site_name']
+        site_name_key = item["site_name"]
         if site_name_key in reservations:
             reservations[site_name_key] = [*reservations[site_name_key], item]
         else:
@@ -26,15 +26,15 @@ def get_cancellation(DATA, citizen_id):
     """Return the user if the citizen id is existed, otherwise return None."""
     for item in DATA.values():
         for user in item:
-            cancel_id = user['citizen_id']
+            cancel_id = user["citizen_id"]
             if cancel_id == citizen_id:
-                user['queue'] = ""
+                user["queue"] = ""
                 return user
     return None
 
 
 def get_service_site_avaliable(data: dict, key: str):
     for i in data:
-        if(key == i):
+        if key == i:
             return i
     return None

@@ -9,7 +9,8 @@ tags_metadata = [
     {
         "name": "service site",
         "description": "Service site provides user a queue and vaccine",
-    },{
+    },
+    {
         "name": "vaccine reservation",
         "description": "Vaccine reservation",
         "externalDocs": {
@@ -17,10 +18,7 @@ tags_metadata = [
             "url": "https://wcg-apis.herokuapp.com/reservation_usage",
         },
     },
-    {
-        "name": "authentication",
-        "description": "jwt bearear token authentication"
-    },
+    {"name": "authentication", "description": "jwt bearear token authentication"},
 ]
 
 app = FastAPI(
@@ -42,6 +40,7 @@ app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
 app.include_router(queue_arranging.router, prefix="/api")
 app.include_router(authentication.router)
+
 
 @app.get("/", include_in_schema=False)
 async def read_root():

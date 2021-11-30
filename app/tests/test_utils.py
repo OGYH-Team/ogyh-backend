@@ -4,7 +4,6 @@ import unittest
 
 
 class TestUtils(unittest.TestCase):
-
     def test_fetch_url(self):
         """Test fetch url from the given url"""
         URL = "https://wcg-apis.herokuapp.com/reservations"
@@ -17,6 +16,5 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(list, type(res))
 
     def test_arraging_reservation(self):
-        reservations = utils.arranging_reservation_by_site_name(
-            sample_reservations)
+        reservations = utils.arranging_reservation_by_site_name(sample_reservations)
         self.assertNotEqual(reservations, sample_reservations)

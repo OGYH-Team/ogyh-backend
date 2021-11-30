@@ -1,10 +1,11 @@
-from os import lstat
-from typing import List, Dict, Optional
-from pydantic import BaseModel, Extra, create_model
+from typing import Dict
+from pydantic import BaseModel, Extra
+
 
 class Coordinate(BaseModel):
     latitude: float
     longitude: float
+
 
 class Location(BaseModel):
     formatted_address: str
