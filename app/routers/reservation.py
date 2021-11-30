@@ -18,7 +18,7 @@ from app.models.reservation import (
 )
 import bson
 
-router = APIRouter(prefix="/site/{site_id}", tags=["reservation"])
+router = APIRouter(prefix="/site/{site_id}", tags=["vaccine reservation"])
 
 
 @router.get(

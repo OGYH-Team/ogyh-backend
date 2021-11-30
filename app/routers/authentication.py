@@ -12,7 +12,7 @@ from app.utils.oauth2 import get_current_user
 from datetime import timedelta
 from fastapi.security import OAuth2PasswordRequestForm
 
-router = APIRouter(tags=["Authentication"])
+router = APIRouter(tags=["authentication"])
 
 
 @router.post(

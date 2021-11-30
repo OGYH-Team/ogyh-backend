@@ -10,13 +10,18 @@ tags_metadata = [
     {
         "name": "service site",
         "description": "Service site provides user a queue and vaccine",
-        "name": "reservation",
-        "description": "Users reservation data and rules come from WCG group ",
+    },{
+        "name": "vaccine reservation",
+        "description": "Vaccine reservation",
         "externalDocs": {
             "description": "docs",
             "url": "https://wcg-apis.herokuapp.com/reservation_usage",
         },
-    }
+    },
+    {
+        "name": "authentication",
+        "description": "jwt bearear token authentication"
+    },
 ]
 
 app = FastAPI(
