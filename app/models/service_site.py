@@ -20,6 +20,7 @@ class Location(BaseModel):
 
 
 class Site(BaseModel):
+    id: str
     name: str
     location: Location
     capacity: int
