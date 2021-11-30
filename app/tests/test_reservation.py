@@ -11,7 +11,7 @@ class TestReservation(asynctest.TestCase):
         """Create a valid citizen and create a reservation."""
         url = "https://wcg-apis.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
-        requests.post(url, params=self.citizen)
+        requests.post(url, params=self.citizen, headers={"Authorization": "Bearer {}".format(self.access_token)})
         url = "https://wcg-apis.herokuapp.com/reservation"
         site_name = "OGYH"
         requests.delete(f"{url}/{citizen_id}")
@@ -23,10 +23,6 @@ class TestReservation(asynctest.TestCase):
                 "vaccine_name": "Astra",
             },
         )
-        res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
-        )
-        self.access_token = res.json()["access_token"]
 
     async def setUp(self) -> None:
         self.queue = asyncio.Queue(maxsize=1)
@@ -43,6 +39,10 @@ class TestReservation(asynctest.TestCase):
             "is_risk": "False",
             "address": "bkk",
         }
+        res = requests.post(
+            "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+        )
+        self.access_token = res.json()["access_token"]
         self.create_citizen()
 
     async def test_get_all_reservations(self):

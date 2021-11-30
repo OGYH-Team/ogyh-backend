@@ -10,6 +10,7 @@ from app.routers.service_site import read_one_site
 from app.models.basic_model import Message
 from bson.objectid import ObjectId
 from typing import Optional
+import requests
 
 router = APIRouter(prefix="/site/{site_id}/queues", tags=["vaccine reservation"])
 
@@ -60,57 +61,74 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     - **site_id**: a valid service provider site.
     """
 
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+
     reservations = (await read_users_reservations(site_id))["response"]["reservations"]
     service_site = await read_one_site(site_id)
     all_time_slots = []
     time_slot_index = 0
     time_str_index = 0
-    delta_time = 0
-    time_slot_size = 10
-    date = datetime.strptime("2021/11/20", time_format)
+    delta_time = 5
+    time_slot_size = 2
+    current_date = datetime.today().strftime(time_format)
+    date = (datetime.strptime(current_date,time_format) + timedelta(days=delta_time))
+    date_string = date.strftime(time_format)
     all_time_slots.append(
         {
             "service_site": service_site.name,
             "time_str": "10:00-10:30",
-            "date": "2021/11/20",
+            "date": date_string,
             "reservations": [],
         }
     )
     count_reservation = 0
     for reservation in reservations:
+
         if count_reservation == service_site.capacity:
             break
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
-            queue = (date + timedelta(hours=10, minutes=30)).strftime(
+
+            time_str_index += 1
+            queue = (date + timedelta(hours=10, minutes=30*time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
             )
-            reservation.update({"queue": queue})
-            time_str_index += 1
             if time_str_index == len(time_str):
                 time_str_index = 0
                 delta_time += 1
+
+            reservation.update({"queue": queue})
+            report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
+            res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
             all_time_slots.append(
                 {
                     "service_site": service_site.name,
                     "time_str": time_str[time_str_index],
-                    "date": (date + timedelta(days=delta_time)).strftime(time_format),
+                    "date": (date+timedelta(days=delta_time)).strftime(time_format),
                     "reservations": [reservation],
                 }
             )
             time_slot_index += 1
 
         else:
+            queue = (date + timedelta(hours=10, minutes=30*time_str_index)).strftime(
+                "%Y-%m-%d %H:%M:%S.%f"
+            )
+            reservation.update({"queue": queue})
+            report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
+            res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+
             all_time_slots[time_slot_index]["reservations"].append(reservation)
         count_reservation += 1
     try:
         async for time_slot in db.time_slots.find({"service_site": service_site.name}):
-            if datetime.strptime(time_slot["date"], time_format) == date:
+            if time_slot["date"] == date_string:
                 await db.time_slots.delete_many(
                     {
                         "service_site": service_site.name,
-                        "date": (date + timedelta(days=delta_time)).strftime(
-                            time_format
-                        ),
+                        "date": date_string,
                     }
                 )
         for time_slot in all_time_slots:
@@ -147,6 +165,6 @@ async def read_walk_in(site_id: str):
     return {
         "response": {
             "service_site": service_site,
-            "remaning": count - service_site.capacity,
+            "remaning": service_site.capacity - count,
         }
     }
