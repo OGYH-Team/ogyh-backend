@@ -9,11 +9,11 @@ import requests
 class TestReservation(asynctest.TestCase):
     def create_citizen(self):
         """Create a valid citizen and create a reservation."""
-        url = "https://wcg-apis.herokuapp.com/registration"
+        url = "https://wcg-apis-test.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
         requests.post(url, params=self.citizen, headers={"Authorization": "Bearer {}".format(self.access_token)})
-        url = "https://wcg-apis.herokuapp.com/reservation"
-        site_name = "OGYH"
+        url = "https://wcg-apis-test.herokuapp.com/reservation"
+        site_name = "TEST"
         requests.delete(f"{url}/{citizen_id}")
         res = requests.post(
             url,
@@ -21,16 +21,17 @@ class TestReservation(asynctest.TestCase):
                 "citizen_id": citizen_id,
                 "site_name": site_name,
                 "vaccine_name": "Astra",
-            },
+            },headers={"Authorization": "Bearer {}".format(self.access_token)}
         )
+
 
     async def setUp(self) -> None:
         self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
-        self.site_id = "619f82fe7d68e527d7763c59"
+        self.site_id = "61a6637c20ce8142e9f3fe3f"
         self.citizen = {
-            "citizen_id": "1130594839284",
+            "citizen_id": "1110394059403",
             "name": "name1",
             "surname": "surname1",
             "birth_date": "11-11-2000",
@@ -74,6 +75,7 @@ class TestReservation(asynctest.TestCase):
             responses = await ac.get(
                 f"{self.base_url}/site/{self.site_id}/reservations", params=page, headers={"Authorization": "Bearer {}".format(self.access_token)}
             )
+            print(responses.json())
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
             self.assertEqual(content["reservations"], [])

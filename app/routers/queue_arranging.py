@@ -72,7 +72,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     time_slot_index = 0
     time_str_index = 0
     delta_time = 5
-    time_slot_size = 2
+    time_slot_size = service_site.capacity / len(time_str)
     current_date = datetime.today().strftime(time_format)
     date = (datetime.strptime(current_date,time_format) + timedelta(days=delta_time))
     date_string = date.strftime(time_format)
