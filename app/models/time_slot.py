@@ -10,3 +10,6 @@ class TimeSlot(BaseModel):
 
     class Config:
         extra = Extra.allow
+
+class CitizenToReport(BaseModel):
+    citizen_ids: List

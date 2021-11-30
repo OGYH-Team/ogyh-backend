@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from fastapi.exceptions import HTTPException
 from starlette.status import HTTP_404_NOT_FOUND
 from app.database import db
 from datetime import datetime, timedelta
 from app.models.user import User
+from app.models.time_slot import CitizenToReport
 from app.utils.oauth2 import get_current_user
 from app.routers.reservation import read_users_reservations
 from app.routers.service_site import read_one_site
@@ -168,3 +169,21 @@ async def read_walk_in(site_id: str):
             "remaning": service_site.capacity - count,
         }
     }
+
+@router.post("/report")
+async def send_report(request: CitizenToReport, site_id: str):
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    time_slots = await read_time_slots(site_id)
+    to_report_list = []
+    for time_slot in time_slots["time_slots"]:
+        for reservation in time_slot["reservations"]:
+            if reservation["citizen_id"] in request.citizen_ids:
+                to_report_list.append(reservation)
+    for reservation in to_report_list:
+        report = {"citizen_id": reservation["citizen_id"], "queue": reservation["queue"]}
+        res = requests.post("https://wcg-apis-test.herokuapp.com/queue_report", params=report, headers={"Authorization": "Bearer {}".format(access_token)})
+
+    return Message(message=f"report {len(to_report_list)} reservations success")
