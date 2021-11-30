@@ -26,16 +26,24 @@ time_format = "%Y/%m/%d"
 
 
 @router.get("/time_slots")
-async def read_time_slots(site_id: str ):   
+async def read_time_slots(site_id: str):
+    """
+    ## Retrive Vaccination Queue
+    """
     service_site = await read_one_site(site_id)
     all_time_slots = []
-    async for time_slot in db.time_slots.find({}):
+    async for time_slot in db.time_slots.find({"service_site": service_site["response"]["name"]}):
         all_time_slots.append({**time_slot, "_id": str(time_slot["_id"])})
     return {"time_slots": all_time_slots}
 
 
 @router.get("/update_queue", response_model=Message)
 async def update_queue(site_id: str, current_user: User = Depends(get_current_user)):
+    """
+    ## Update Vaccination Queue
+    - **site_id**: a valid service provider site.
+
+    """
     reservations = (await read_users_reservations(site_id))["response"]["reservations"]
     service_site = await read_one_site(site_id)
     all_time_slots = []
@@ -43,12 +51,11 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     time_str_index = 0
     delta_time = 0
     date = datetime.strptime("2021/11/20", time_format)
-    # print(reservations)
     all_time_slots.append(
         {
             "service_site": service_site["response"]["name"],
-            "time_str": "10:00-10:30", 
-            "date": "2021/11/20", 
+            "time_str": "10:00-10:30",
+            "date": "2021/11/20",
             "reservations": []}
     )
 
