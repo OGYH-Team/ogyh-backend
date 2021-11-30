@@ -29,7 +29,7 @@ class TestReservation(asynctest.TestCase):
         self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
-        self.site_id = "61a6637c20ce8142e9f3fe3f"
+        self.site_id = "61a675cdcdfc0e87ab74b90d"
         self.citizen = {
             "citizen_id": "1110394059403",
             "name": "name1",

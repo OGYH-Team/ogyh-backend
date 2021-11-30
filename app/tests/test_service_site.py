@@ -34,7 +34,7 @@ class TestServiceSite(asynctest.TestCase):
             },
             "capacity": 20000,
         }
-        self.valid_site_id = "619f82fe7d68e527d7763c59"
+        self.valid_site_id = "61a675cdcdfc0e87ab74b90d"
 
     async def test_get_all_service_site(self):
         """Test retrive all the valid service sites."""
