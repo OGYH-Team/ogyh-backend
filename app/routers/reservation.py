@@ -46,10 +46,7 @@ async def read_users_reservations(
     res = requests.post(
         "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
     )
-    print(res.status_code)
     access_token = res.json()["access_token"]
-    print(access_token)
-
     user_data = fetch_url(
         "https://wcg-apis.herokuapp.com/reservations", token=access_token
     )
@@ -101,7 +98,13 @@ async def read_users_reservation(
     - **citizen_id**: a specific citizen_id
 
     """
-    user_data = fetch_url("https://wcg-apis.herokuapp.com/reservations")
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    user_data = fetch_url(
+        "https://wcg-apis.herokuapp.com/reservations", token=access_token
+    )
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
 
     try:
