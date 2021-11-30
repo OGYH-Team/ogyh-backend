@@ -41,7 +41,8 @@ class TestServiceSite(asynctest.TestCase):
                         "latitude": 13.80375,
                         "longitude": 100.54225
                 }
-            }
+            },
+            "capacity": 20000
         }
         self.valid_site_id = "619f82fe7d68e527d7763c59"
 
@@ -77,7 +78,8 @@ class TestServiceSite(asynctest.TestCase):
                         "latitude": 13.87719,
                         "longitude": 100.41136
                 }
-            }
+            },
+            "capacity": 5000
         }
         with requests_mock.Mocker() as rm:
             rm.post(f"{self.base_url}/site", json=valid_service_site)
@@ -104,7 +106,7 @@ class TestServiceSite(asynctest.TestCase):
             self.assertEqual(200, responses.status_code)
             responses = await ac.get(f"{self.base_url}/site/{self.valid_site_id}")
             self.assertEqual(
-                self.valid_service_site, responses.json()["response"]
+                self.valid_service_site, responses.json()
             )
 
     async def test_update_invalid_service_site(self):

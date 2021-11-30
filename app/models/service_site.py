@@ -21,6 +21,7 @@ class Location(BaseModel):
 class Site(BaseModel):
     name: str
     location: Location
+    capacity: int
 
     class Config:
         extra = Extra.allow
@@ -34,9 +35,9 @@ class PageData(BaseModel):
         arbitrary_types_allowed = True
 
 
-class GetSitesResponse(BaseModel):
-    response: List[Site]
+# class GetSitesResponse(BaseModel):
+#     response: List[Site]
 
 
-class GetSiteResponse(BaseModel):
-    response: Site
+# class GetSiteResponse(BaseModel):
+#     response: Site
