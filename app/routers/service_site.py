@@ -12,7 +12,7 @@ from app.database import (
     update_site,
 )
 from app.models.basic_model import Message
-from app.models.service_site import Site
+from app.models.service_site import Site, UpdateSite
 from app.models.user import User
 
 router = APIRouter(tags=["service site"])
@@ -86,7 +86,7 @@ async def read_one_site(id: str):
         }
     },
 )
-async def add_site_data(request: Site, current_user: User = Depends(get_current_user)):
+async def add_site_data(request: UpdateSite, current_user: User = Depends(get_current_user)):
     """
     ## Create a new service site:
 
@@ -108,7 +108,7 @@ async def add_site_data(request: Site, current_user: User = Depends(get_current_
     },
 )
 async def updated_site(
-    id: str, request: Site, current_user: User = Depends(get_current_user)
+    id: str, request: UpdateSite, current_user: User = Depends(get_current_user)
 ):
     """
     ## Update a service site information:

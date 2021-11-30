@@ -28,6 +28,13 @@ class Site(BaseModel):
     class Config:
         extra = Extra.allow
 
+class UpdateSite(BaseModel):
+    name: str
+    location: Location
+    capacity: int
+
+    class Config:
+        extra = Extra.allow    
 
 class PageData(BaseModel):
     page_data = Dict[str, int]

@@ -2,6 +2,7 @@ from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from app.utils.oauth2 import get_current_user
+from bson.objectid import ObjectId
 import bson
 import requests_mock
 import asynctest
@@ -93,7 +94,9 @@ class TestServiceSite(asynctest.TestCase):
             )
             self.assertEqual(200, responses.status_code)
             responses = await ac.get(f"{self.base_url}/site/{self.valid_site_id}")
-            self.assertEqual(self.valid_service_site, responses.json())
+            content = responses.json()
+            del content["id"] # we don't object id at first
+            self.assertEqual(self.valid_service_site, content)
 
     async def test_update_invalid_service_site(self):
         """Test updated invalid service site using mock request_mock."""
