@@ -87,11 +87,11 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     )
     count_reservation = 0
     for reservation in reservations:
-
+        if (reservation["checked"] == "True"):
+            continue
         if count_reservation == service_site.capacity:
             break
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
-
             time_str_index += 1
             queue = (date + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
@@ -101,6 +101,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
                 delta_time += 1
 
             reservation.update({"queue": queue})
+
             report = {
                 "citizen_id": reservation["citizen_id"],
                 "queue": reservation["queue"],
@@ -177,12 +178,11 @@ async def read_walk_in(site_id: str):
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
         for reservation in time_slot["reservations"]:
             count += 1
-
     return {
         "response": {
             "service_site": service_site,
             "remaining": service_site.capacity - count
-            if service_site.capacity <= count
+            if service_site.capacity > count
             else 0,
         }
     }
