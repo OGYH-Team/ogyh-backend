@@ -36,7 +36,7 @@ async def read_users_reservations(
     - **page** : number of pages to be shown as a result
     """
     user_data = fetch_url(
-        "https://wcg-apis-test.herokuapp.com/reservations", token=get_access_to_api()
+        "https://wcg-apis.herokuapp.com/reservations", token=get_access_to_api()
     )
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
     try:
@@ -83,7 +83,7 @@ async def read_users_reservation(
 
     """
     user_data = fetch_url(
-        "https://wcg-apis-test.herokuapp.com/reservations", token=get_access_to_api()
+        "https://wcg-apis.herokuapp.com/reservations", token=get_access_to_api()
     )
     user_data_by_site_name = arranging_reservation_by_site_name(user_data)
     try:

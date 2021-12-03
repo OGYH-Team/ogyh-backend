@@ -69,7 +69,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     """
     # login for sending report
     res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+        "https://wcg-apis.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
     )
     access_token = res.json()["access_token"]
 
@@ -122,7 +122,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
                 "queue": reservation["queue"],
             }
             res = requests.post(
-                "https://wcg-apis-test.herokuapp.com/queue_report",
+                "https://wcg-apis.herokuapp.com/queue_report",
                 params=report,
                 headers={"Authorization": "Bearer {}".format(access_token)},
             )
@@ -147,7 +147,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
                 "queue": reservation["queue"],
             }
             res = requests.post(
-                "https://wcg-apis-test.herokuapp.com/queue_report",
+                "https://wcg-apis.herokuapp.com/queue_report",
                 params=report,
                 headers={"Authorization": "Bearer {}".format(access_token)},
             )
@@ -234,7 +234,7 @@ async def send_report(
     - **citizen_ids** : a valid list of citizen id to report.
     """
     res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+        "https://wcg-apis.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
     )
     access_token = res.json()["access_token"]
     time_slots = await read_time_slots(site_id)
@@ -249,7 +249,7 @@ async def send_report(
             "queue": reservation["queue"],
         }
         res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/queue_report",
+            "https://wcg-apis.herokuapp.com/queue_report",
             params=report,
             headers={"Authorization": "Bearer {}".format(access_token)},
         )
@@ -270,7 +270,7 @@ async def send_vaccinated_report(
     - **citizen_ids** : a valid list of citizen id to report.
     """
     res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+        "https://wcg-apis.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
     )
     access_token = res.json()["access_token"]
     time_slots = await read_time_slots(site_id)
@@ -286,7 +286,7 @@ async def send_vaccinated_report(
             "option": "reserve" if not isWalkin else "walk-in",
         }
         res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/report_taken",
+            "https://wcg-apis.herokuapp.com/report_taken",
             params=report,
             headers={"Authorization": "Bearer {}".format(access_token)},
         )

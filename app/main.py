@@ -48,7 +48,7 @@ async def startup_event():
     import requests
 
     res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/register_user",
+        "https://wcg-apis.herokuapp.com/register_user",
         params={"username": "Chayapol", "password": "Kp6192649"},
     )
     print(res.status_code)

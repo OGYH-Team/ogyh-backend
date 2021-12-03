@@ -10,14 +10,14 @@ import requests
 class TestReservation(asynctest.TestCase):
     def create_citizen(self):
         """Create a valid citizen and create a reservation."""
-        url = "https://wcg-apis-test.herokuapp.com/registration"
+        url = "https://wcg-apis.herokuapp.com/registration"
         citizen_id = self.citizen["citizen_id"]
         requests.post(
             url,
             params=self.citizen,
             headers={"Authorization": "Bearer {}".format(self.access_token)},
         )
-        url = "https://wcg-apis-test.herokuapp.com/reservation"
+        url = "https://wcg-apis.herokuapp.com/reservation"
         site_name = "OGYH"
         requests.delete(
             f"{url}/{citizen_id}",
@@ -50,7 +50,7 @@ class TestReservation(asynctest.TestCase):
             "address": "bkk",
         }
         res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+            "https://wcg-apis.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
         )
         self.access_token = res.json()["access_token"]
         self.create_citizen()
