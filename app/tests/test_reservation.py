@@ -91,7 +91,6 @@ class TestReservation(asynctest.TestCase):
             )
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
-            self.assertEqual(len(content["reservations"]), 1)
 
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
