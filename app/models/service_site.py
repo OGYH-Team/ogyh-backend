@@ -1,10 +1,11 @@
-from os import lstat
-from typing import List, Dict, Optional
-from pydantic import BaseModel, Extra, create_model
+from typing import Dict
+from pydantic import BaseModel, Extra
+
 
 class Coordinate(BaseModel):
     latitude: float
     longitude: float
+
 
 class Location(BaseModel):
     formatted_address: str
@@ -19,8 +20,19 @@ class Location(BaseModel):
 
 
 class Site(BaseModel):
+    id: str
     name: str
     location: Location
+    capacity: int
+
+    class Config:
+        extra = Extra.allow
+
+
+class UpdateSite(BaseModel):
+    name: str
+    location: Location
+    capacity: int
 
     class Config:
         extra = Extra.allow
@@ -34,9 +46,9 @@ class PageData(BaseModel):
         arbitrary_types_allowed = True
 
 
-class GetSitesResponse(BaseModel):
-    response: List[Site]
+# class GetSitesResponse(BaseModel):
+#     response: List[Site]
 
 
-class GetSiteResponse(BaseModel):
-    response: Site
+# class GetSiteResponse(BaseModel):
+#     response: Site

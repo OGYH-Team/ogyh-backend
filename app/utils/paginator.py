@@ -3,13 +3,9 @@ import math
 
 
 class Paginator:
-
     def __init__(self, items: List) -> None:
         self.__items = items
-        self.__page_data = {
-            "total": len(self.__items),
-            "page": 1
-        }
+        self.__page_data = {"total": len(self.__items), "page": 1}
         self.__start_index = 0
         self.__end_index = len(self.__items)
 
@@ -26,4 +22,4 @@ class Paginator:
         return self.__page_data
 
     def get_items(self):
-        return self.__items[self.__start_index:self.__end_index]
+        return self.__items[self.__start_index : self.__end_index]

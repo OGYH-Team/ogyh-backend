@@ -1,19 +1,14 @@
-from unittest.case import skip
+from starlette import responses
 from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from app.utils.oauth2 import get_current_user
-import bson
 import requests_mock
-import json
 import asynctest
 
 
 def override_get_current_user():
-    valid_user = {
-        "username": "Tester",
-        "password": "tester123"
-    }
+    valid_user = {"username": "Tester", "password": "tester123"}
     return valid_user
 
 
@@ -25,25 +20,20 @@ class TestServiceSite(asynctest.TestCase):
         self.client = TestClient(app)
         self.base_url = "/api"
         self.auth_url = "/login"
-        self.valid_user = {
-            "username": "Tester",
-            "password": "tester123"
-        }
+        self.valid_user = {"username": "Tester", "password": "tester123"}
         self.valid_service_site = {
-            "name": "สถานีกลางบางซื่อ",
+            "name": "TEST",
             "location": {
                 "formatted_address": "336 ซอยกำแพงเพชร 2 ถนนเทอดดำริ แขวงจตุจักร เขตจตุจักร กรุงเทพมหานคร",
                 "country": "ไทย",
                 "postal": "10900",
                 "route": "เทอดดำริ",
                 "city": "กรุงเทพมหานคร",
-                "coordinates": {
-                        "latitude": 13.80375,
-                        "longitude": 100.54225
-                }
-            }
+                "coordinates": {"latitude": 13.80375, "longitude": 100.54225},
+            },
+            "capacity": 20000,
         }
-        self.valid_site_id = "619f82fe7d68e527d7763c59"
+        self.valid_site_id = "61a675cdcdfc0e87ab74b90d"
 
     async def test_get_all_service_site(self):
         """Test retrive all the valid service sites."""
@@ -73,16 +63,16 @@ class TestServiceSite(asynctest.TestCase):
                 "postal": "11140",
                 "route": "กาญจนาภิเษก",
                 "city": "นนทบุรี ",
-                "coordinates": {
-                        "latitude": 13.87719,
-                        "longitude": 100.41136
-                }
-            }
+                "coordinates": {"latitude": 13.87719, "longitude": 100.41136},
+            },
+            "capacity": 5000,
         }
         with requests_mock.Mocker() as rm:
             rm.post(f"{self.base_url}/site", json=valid_service_site)
             async with AsyncClient(app=app, base_url="http://test") as ac:
-                response = await ac.post(f"{self.base_url}/site", json=valid_service_site)
+                response = await ac.post(
+                    f"{self.base_url}/site", json=valid_service_site
+                )
                 self.assertEqual(201, response.status_code)
 
     async def test_insert_service_site_with_invalid_data(self):
@@ -103,15 +93,16 @@ class TestServiceSite(asynctest.TestCase):
             )
             self.assertEqual(200, responses.status_code)
             responses = await ac.get(f"{self.base_url}/site/{self.valid_site_id}")
-            self.assertEqual(
-                self.valid_service_site, responses.json()["response"]
-            )
+            content = responses.json()
+            del content["id"]  # we don't object id at first
+            self.assertEqual(self.valid_service_site, content)
 
     async def test_update_invalid_service_site(self):
         """Test updated invalid service site using mock request_mock."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.put(
-                f"{self.base_url}/site/619f7c3289c2942b7d28f5e1", json=self.valid_service_site
+                f"{self.base_url}/site/619f7c3289c2942b7d28f5e1",
+                json=self.valid_service_site,
             )
             self.assertEqual(404, responses.status_code)
 
@@ -120,9 +111,7 @@ class TestServiceSite(asynctest.TestCase):
         async with AsyncClient(app=app, base_url="http://test") as ac:
             with requests_mock.Mocker() as rm:
                 rm.post(f"{self.base_url}/site", json=self.valid_service_site)
-                rm.delete(
-                    f"{self.base_url}/site/{self.valid_site_id}"
-                )
+                rm.delete(f"{self.base_url}/site/{self.valid_site_id}")
 
     async def test_remove_invalid_12_byte_hex_service_site_id(self):
         """Test remove invalid service site using its id which is 24 characters."""
@@ -134,6 +123,30 @@ class TestServiceSite(asynctest.TestCase):
 
     async def test_remove_invalid_service_site(self):
         """Test remove valid service site using 1 character as its id."""
-        with self.assertRaises(bson.errors.InvalidId):
-            async with AsyncClient(app=app, base_url="http://test") as ac:
-                await ac.delete(f"{self.base_url}/site/1")
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.delete(f"{self.base_url}/site/1")
+            self.assertEqual(404, response.status_code)
+
+    async def test_get_sites_that_has_reservations(self):
+        """Test get valid service site that has reservations."""
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.get(f"{self.base_url}/sites", params={"reserve": True})
+            self.assertEqual(200, response.status_code)
+
+    async def test_get_site_with_invalid_id(self):
+        """Test get a service site using its id which is 24 characters."""
+        invalid_site_id = "619f7c3289c2942b7d28f5e0"
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.get(f"{self.base_url}/site/{invalid_site_id}")
+            self.assertEqual(404, response.status_code)
+
+    async def test_update_site_with_invalid_id(self):
+        """Test update a service site using its id which is 24 characters."""
+        invalid_site_id = "619f7c3289c2942b7d28f5e0"
+        updated_value = self.valid_service_site
+        updated_value.update({"name": "TEST"})
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.put(
+                f"{self.base_url}/site/{invalid_site_id}", json=updated_value
+            )
+            self.assertEqual(404, response.status_code)
