@@ -51,6 +51,32 @@ class TestAuthentication(asynctest.TestCase):
         self.assertEqual(404, responses.status_code)
         self.assertEqual("Invalid Credentials", responses.json()["detail"])
 
+    async def test_add_service_site(self):
+        """Test valid user add the service site to database."""
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            login_responses = await ac.post(f"{self.base_url}", data=self.valid_user)
+            create_site_response = await ac.post(f"/api/site", json=
+                {
+                    "name": "TestCreateSite",
+                    "location": {
+                        "formatted_address": "TestAddress",
+                        "country": "ไทย",
+                        "postal": "10200",
+                        "route": "พหลโยธิน",
+                        "city": "กรุงเทพมหานคร",
+                        "coordinates": {
+                        "latitude": 10,
+                        "longitude": 10
+                        }
+                    },
+                    "capacity": 0
+                },
+                headers={"Authorization": "Bearer {}".format(login_responses.json()["access_token"])}
+            )
+        self.assertEqual(201, create_site_response.status_code)
+        self.assertEqual("TestCreateSite", create_site_response.json()["name"])
+
+
     @skip("Not complete")
     async def test_read_user_when_login(self):
         """Test get current user while login."""
