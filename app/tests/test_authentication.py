@@ -1,9 +1,13 @@
 from app.main import app
+from app.utils.token import verify_token, create_access_token
+from app.utils.oauth2 import get_current_user
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 import requests_mock
 import asynctest
 from unittest.case import skip
+from datetime import timedelta
+from app.utils.token import ACCESS_TOKEN_EXPIRE_MINUTES
 
 
 class TestAuthentication(asynctest.TestCase):
@@ -94,3 +98,13 @@ class TestAuthentication(asynctest.TestCase):
             responses = await ac.get(f"{self.read_user_url}")
         self.assertEqual(404, responses.status_code)
         self.assertEqual("", responses.json())
+
+    async def test_verify_token(self):
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token({"sub":"password"}, access_token_expires)
+        verify_token(access_token, "")
+        self.assertEqual(get_current_user(access_token), verify_token(access_token, ""))
+    
+    async def test_create_token_without_expires(self):
+        access_token = create_access_token({"sub":"password"})
+        self.assertEqual(get_current_user(access_token), verify_token(access_token, ""))

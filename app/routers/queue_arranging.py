@@ -316,4 +316,5 @@ async def send_walkin_report(
         params=report,
         headers={"Authorization": "Bearer {}".format(access_token)},
     )
+    print(res.text)
     return Message(message=f"report success")
