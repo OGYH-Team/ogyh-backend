@@ -1,5 +1,11 @@
 from fastapi import FastAPI
-from app.routers import reservation, service_site, queue_arranging, authentication
+from app.routers import (
+    reservation,
+    service_site,
+    queue_arranging,
+    authentication,
+    report,
+)
 from fastapi.middleware.cors import CORSMiddleware
 
 description = """
@@ -13,10 +19,6 @@ tags_metadata = [
     {
         "name": "vaccine reservation",
         "description": "Vaccine reservation",
-        "externalDocs": {
-            "description": "docs",
-            "url": "https://wcg-apis.herokuapp.com/reservation_usage",
-        },
     },
     {"name": "authentication", "description": "jwt bearear token authentication"},
 ]
@@ -24,7 +26,7 @@ tags_metadata = [
 app = FastAPI(
     title="Service Site OGYH",
     description=description,
-    version="0.1",
+    version="1.0",
     openapi_tags=tags_metadata,
 )
 
@@ -40,6 +42,18 @@ app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
 app.include_router(queue_arranging.router, prefix="/api")
 app.include_router(authentication.router)
+app.include_router(report.router, prefix="/api")
+
+
+@app.on_event("startup")
+async def startup_event():
+    import requests
+
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/register_user",
+        params={"username": "Chayapol", "password": "Kp6192649"},
+    )
+    print(res.status_code)
 
 
 @app.get("/", include_in_schema=False)

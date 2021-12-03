@@ -1,6 +1,7 @@
 """Api router for service site."""
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Optional, List
+from app.routers.reservation import read_users_reservations
 
 from app.utils.oauth2 import get_current_user
 from app.utils.paginator import Paginator
@@ -14,6 +15,7 @@ from app.database import (
 from app.models.basic_model import Message
 from app.models.service_site import Site, UpdateSite
 from app.models.user import User
+import bson
 
 router = APIRouter(tags=["service site"])
 
@@ -24,7 +26,11 @@ router = APIRouter(tags=["service site"])
     summary="Get every service sites",
     response_model=List[Site],
 )
-async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
+async def read_site_names(
+    limit: Optional[int] = None,
+    page: Optional[int] = 1,
+    reserve: Optional[bool] = False,
+):
     """
     ## Show service sites information:
 
@@ -33,8 +39,20 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1):
 
     """
     sites = await retrive_sites()
+    site_ids = [site["id"] for site in sites]
     if sites:
-        site_paginator = Paginator(sites)
+        if reserve:
+            selected_sites = []
+            for i in range(len(site_ids)):
+                try:
+                    reservations = await read_users_reservations(site_ids[i])
+                    if reservations:
+                        selected_sites.append(sites[i])
+                except:
+                    continue
+        else:
+            selected_sites = sites
+        site_paginator = Paginator(selected_sites)
         site_paginator.paginate(page=page, limit=limit)
         return site_paginator.get_items()
         # return {
@@ -60,7 +78,14 @@ async def read_one_site(id: str):
 
     - **id** : service site id
     """
-    site = await retrieve_site(id)
+    try:
+        site = await retrieve_site(id)
+    except bson.errors.InvalidId:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
+
     if site:
         return Site(
             id=site["id"],
@@ -123,7 +148,13 @@ async def updated_site(
     - **location** : a new service site location
     """
     new_value = dict(**request.dict())
-    updated_site = await update_site(id, new_value)
+    try:
+        updated_site = await update_site(id, new_value)
+    except bson.errors.InvalidId:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
     if updated_site:
         return Message(message=f"update {id} success")
     raise HTTPException(
@@ -146,7 +177,13 @@ async def remove_site(id: str, current_user: User = Depends(get_current_user)):
 
     - **id** : an id of service site deleted
     """
-    deleted_site = await delete_site(id)
+    try:
+        deleted_site = await delete_site(id)
+    except bson.errors.InvalidId:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
     if deleted_site:
         return Message(message=f"delete site id {id} success")
     raise HTTPException(
