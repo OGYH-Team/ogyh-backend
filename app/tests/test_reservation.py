@@ -18,6 +18,7 @@ class TestReservation(asynctest.TestCase):
             headers={"Authorization": "Bearer {}".format(self.access_token)},
         )
         url = "https://wcg-apis-test.herokuapp.com/reservation"
+        site_name = "OGYH"
         requests.delete(
             f"{url}/{citizen_id}",
             headers={"Authorization": "Bearer {}".format(self.access_token)},
@@ -81,17 +82,16 @@ class TestReservation(asynctest.TestCase):
         page = {
             "limit": -5,
             "page": 1,
-        }  # the negative would be convert to 0 automatically
+        }  # the negative would be convert to 1 automatically
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
                 f"{self.base_url}/site/{self.site_id}/reservations",
                 params=page,
                 headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
-            print(responses.json())
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
-            self.assertEqual(content["reservations"], [])
+            self.assertEqual(len(content["reservations"]), 1)
 
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
@@ -139,7 +139,7 @@ class TestReservation(asynctest.TestCase):
 
     async def test_get_empty_reservation_from_service_site(self):
         """Test retrive reservation from empty service_site."""
-        service_site = "6179113760e255455240052b"
+        service_site = "61a35cdc04f73b2cab41c6da"
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
                 f"{self.base_url}/site/{service_site}/reservations",
@@ -148,6 +148,37 @@ class TestReservation(asynctest.TestCase):
             content = responses.json()
             self.assertEqual(
                 content["detail"],
-                "Not Found",
+                f"Reservation in Service site {service_site} not found",
+            )
+            self.assertEqual(404, responses.status_code)
+
+    async def test_get_reservations_with_invalid_site_id(self):
+        """Test retrive reservations with invalid service_site id."""
+        service_site = "6179113760e255455240052bab"
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            responses = await ac.get(
+                f"{self.base_url}/site/{service_site}/reservations",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
+            )
+            content = responses.json()
+            self.assertEqual(
+                content["detail"],
+                f"Service site id {service_site} is invalid",
+            )
+            self.assertEqual(404, responses.status_code)
+
+    async def test_get_reservation_with_invalid_site_id(self):
+        """Test retrive a reservation with invalid service_site id."""
+        service_site = "6179113760e255455240052bab"
+        citizen_id = self.citizen["citizen_id"]
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            responses = await ac.get(
+                f"{self.base_url}/site/{service_site}/reservation/{citizen_id}",
+                headers={"Authorization": "Bearer {}".format(self.access_token)},
+            )
+            content = responses.json()
+            self.assertEqual(
+                content["detail"],
+                f"Service site id {service_site} is invalid",
             )
             self.assertEqual(404, responses.status_code)

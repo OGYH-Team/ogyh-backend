@@ -4,7 +4,6 @@ from app.routers import (
     service_site,
     queue_arranging,
     authentication,
-    report,
 )
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -42,7 +41,6 @@ app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
 app.include_router(queue_arranging.router, prefix="/api")
 app.include_router(authentication.router)
-app.include_router(report.router, prefix="/api")
 
 
 @app.on_event("startup")

@@ -4,7 +4,7 @@ from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 from app.database import db
 from datetime import datetime, timedelta
 from app.models.user import User
-from app.models.time_slot import TimeSlots
+from app.models.time_slot import TimeSlots, CitizenToReport
 from app.utils.oauth2 import get_current_user
 from app.routers.reservation import read_users_reservations
 from app.routers.service_site import read_one_site
@@ -102,7 +102,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
 
     # running through the reservations
     for reservation in reservations:
-        if (reservation["checked"] == "True") or (reservation["queue"] != ""):
+        if reservation["checked"] == "True":
             continue
         if count_reservation == service_site.capacity:
             break
@@ -220,3 +220,74 @@ async def read_walk_in(site_id: str):
             else 0,
         }
     }
+
+
+@router.post("/report", status_code=status.HTTP_201_CREATED)
+async def send_report(
+    request: CitizenToReport,
+    site_id: str,
+    current_user: User = Depends(get_current_user),
+):
+    """
+    ## Create a queue report and send to government.
+    - **site_id**: a valid service provider site.
+    - **citizen_ids** : a valid list of citizen id to report.
+    """
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    time_slots = await read_time_slots(site_id)
+    to_report_list = []
+    for time_slot in time_slots["time_slots"]:
+        for reservation in time_slot["reservations"]:
+            if reservation["citizen_id"] in request.citizen_ids:
+                to_report_list.append(reservation)
+    for reservation in to_report_list:
+        report = {
+            "citizen_id": reservation["citizen_id"],
+            "queue": reservation["queue"],
+        }
+        res = requests.post(
+            "https://wcg-apis-test.herokuapp.com/queue_report",
+            params=report,
+            headers={"Authorization": "Bearer {}".format(access_token)},
+        )
+
+    return Message(message=f"report {len(to_report_list)} reservations success")
+
+
+@router.post("/report-taken", status_code=status.HTTP_201_CREATED)
+async def send_vaccinated_report(
+    request: CitizenToReport,
+    site_id: str,
+    isWalkin: Optional[bool] = False,
+    current_user: User = Depends(get_current_user),
+):
+    """
+    ## Create a vaccine report and send to government.
+    - **site_id** : a valid service provider site.
+    - **citizen_ids** : a valid list of citizen id to report.
+    """
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    time_slots = await read_time_slots(site_id)
+    to_report_list = []
+    for time_slot in time_slots["time_slots"]:
+        for reservation in time_slot["reservations"]:
+            if reservation["citizen_id"] in request.citizen_ids:
+                to_report_list.append(reservation)
+    for reservation in to_report_list:
+        report = {
+            "citizen_id": reservation["citizen_id"],
+            "vaccine_name": reservation["vaccine_name"],
+            "option": "reserve" if not isWalkin else "walk-in",
+        }
+        res = requests.post(
+            "https://wcg-apis-test.herokuapp.com/report_taken",
+            params=report,
+            headers={"Authorization": "Bearer {}".format(access_token)},
+        )
+    return Message(message=f"report {len(to_report_list)} reservations success")
