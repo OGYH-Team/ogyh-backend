@@ -124,6 +124,6 @@ class TestServiceSite(asynctest.TestCase):
 
     async def test_remove_invalid_service_site(self):
         """Test remove valid service site using 1 character as its id."""
-        with self.assertRaises(bson.errors.InvalidId):
-            async with AsyncClient(app=app, base_url="http://test") as ac:
-                await ac.delete(f"{self.base_url}/site/1")
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.delete(f"{self.base_url}/site/1")
+            self.assertEqual(404, response.status_code)

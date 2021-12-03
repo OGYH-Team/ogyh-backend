@@ -1,6 +1,7 @@
 from app.main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+from ..routers.service_site import read_one_site
 import asyncio
 import asynctest
 import requests
@@ -17,13 +18,16 @@ class TestReservation(asynctest.TestCase):
             headers={"Authorization": "Bearer {}".format(self.access_token)},
         )
         url = "https://wcg-apis-test.herokuapp.com/reservation"
-        site_name = "TEST"
-        requests.delete(f"{url}/{citizen_id}")
+        site_name = "OGYH"
+        requests.delete(
+            f"{url}/{citizen_id}",
+            headers={"Authorization": "Bearer {}".format(self.access_token)},
+        )
         res = requests.post(
             url,
             params={
                 "citizen_id": citizen_id,
-                "site_name": site_name,
+                "site_name": self.site_name,
                 "vaccine_name": "Astra",
             },
             headers={"Authorization": "Bearer {}".format(self.access_token)},
@@ -33,9 +37,10 @@ class TestReservation(asynctest.TestCase):
         self.queue = asyncio.Queue(maxsize=1)
         self.client = TestClient(app)
         self.base_url = "/api"
-        self.site_id = "61a675cdcdfc0e87ab74b90d"
+        self.site_id = "61a362463909ca3855647a63"
+        self.site_name = (await read_one_site(self.site_id)).name
         self.citizen = {
-            "citizen_id": "1110394059402",
+            "citizen_id": "1110394059403",
             "name": "name1",
             "surname": "surname1",
             "birth_date": "11-11-2000",
