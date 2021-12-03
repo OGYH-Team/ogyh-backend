@@ -132,7 +132,7 @@ class TestServiceSite(asynctest.TestCase):
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.get(f"{self.base_url}/sites", params={"reserve": True})
             self.assertEqual(200, response.status_code)
-    
+
     async def test_get_site_with_invalid_id(self):
         """Test get a service site using its id which is 24 characters."""
         invalid_site_id = "619f7c3289c2942b7d28f5e0"
@@ -146,5 +146,7 @@ class TestServiceSite(asynctest.TestCase):
         updated_value = self.valid_service_site
         updated_value.update({"name": "TEST"})
         async with AsyncClient(app=app, base_url="http://test") as ac:
-            response = await ac.put(f"{self.base_url}/site/{invalid_site_id}",json=updated_value)
+            response = await ac.put(
+                f"{self.base_url}/site/{invalid_site_id}", json=updated_value
+            )
             self.assertEqual(404, response.status_code)

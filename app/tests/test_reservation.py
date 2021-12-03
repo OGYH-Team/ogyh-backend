@@ -167,10 +167,9 @@ class TestReservation(asynctest.TestCase):
             )
             self.assertEqual(404, responses.status_code)
 
-
     async def test_get_reservation_with_invalid_site_id(self):
         """Test retrive a reservation with invalid service_site id."""
-        service_site = "6179113760e255455240052bab"        
+        service_site = "6179113760e255455240052bab"
         citizen_id = self.citizen["citizen_id"]
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(

@@ -102,7 +102,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
 
     # running through the reservations
     for reservation in reservations:
-        if (reservation["checked"] == "True"):
+        if reservation["checked"] == "True":
             continue
         if count_reservation == service_site.capacity:
             break
@@ -221,8 +221,13 @@ async def read_walk_in(site_id: str):
         }
     }
 
+
 @router.post("/report", status_code=status.HTTP_201_CREATED)
-async def send_report(request: CitizenToReport, site_id: str, current_user: User = Depends(get_current_user)):
+async def send_report(
+    request: CitizenToReport,
+    site_id: str,
+    current_user: User = Depends(get_current_user),
+):
     """
     ## Create a queue report and send to government.
     - **site_id**: a valid service provider site.
@@ -253,7 +258,12 @@ async def send_report(request: CitizenToReport, site_id: str, current_user: User
 
 
 @router.post("/report-taken", status_code=status.HTTP_201_CREATED)
-async def send_vaccinated_report(request: CitizenToReport, site_id: str, isWalkin: Optional[bool] = False ,current_user: User = Depends(get_current_user)):
+async def send_vaccinated_report(
+    request: CitizenToReport,
+    site_id: str,
+    isWalkin: Optional[bool] = False,
+    current_user: User = Depends(get_current_user),
+):
     """
     ## Create a vaccine report and send to government.
     - **site_id** : a valid service provider site.
