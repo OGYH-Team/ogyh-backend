@@ -1,17 +1,18 @@
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
-from starlette.status import HTTP_404_NOT_FOUND
+from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 from app.database import db
 from datetime import datetime, timedelta
 from app.models.user import User
-from app.models.time_slot import CitizenToReport
+from app.models.time_slot import TimeSlots
 from app.utils.oauth2 import get_current_user
 from app.routers.reservation import read_users_reservations
 from app.routers.service_site import read_one_site
 from app.models.basic_model import Message
 from bson.objectid import ObjectId
-from typing import Optional
+from typing import Optional, List
 import requests
+import bson
 
 router = APIRouter(prefix="/site/{site_id}/queues", tags=["vaccine reservation"])
 
@@ -29,14 +30,19 @@ time_str = [
 time_format = "%Y/%m/%d"
 
 
-@router.get("/")
+@router.get("/", status_code=HTTP_200_OK, response_model=TimeSlots)
 async def read_time_slots(site_id: str, date: Optional[str] = ""):
     """
     ## Retrive Vaccination Queue
     - **site_id**: a valid service provider site.
     - **date** : a specific time slot date time string.
     """
-    service_site = await read_one_site(site_id)
+    try:
+        service_site = await read_one_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
+
     all_time_slots = []
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
         all_time_slots.append({**time_slot, "_id": str(time_slot["_id"])})
@@ -55,20 +61,27 @@ async def read_time_slots(site_id: str, date: Optional[str] = ""):
     return {"time_slots": all_time_slots}
 
 
-@router.get("/update_queue", response_model=Message)
+@router.get("/update_queue", response_model=Message, status_code=HTTP_200_OK)
 async def update_queue(site_id: str, current_user: User = Depends(get_current_user)):
     """
     ## Update Vaccination Queue
     - **site_id**: a valid service provider site.
     """
-
+    # login for sending report
     res = requests.post(
         "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
     )
     access_token = res.json()["access_token"]
 
     reservations = (await read_users_reservations(site_id))["response"]["reservations"]
-    service_site = await read_one_site(site_id)
+
+    try:
+        service_site = await read_one_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
+
+    # initialize time slot variables
     all_time_slots = []
     time_slot_index = 0
     time_str_index = 0
@@ -86,8 +99,10 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
         }
     )
     count_reservation = 0
+
+    # running through the reservations
     for reservation in reservations:
-        if (reservation["checked"] == "True"):
+        if (reservation["checked"] == "True") or (reservation["queue"] != ""):
             continue
         if count_reservation == service_site.capacity:
             break
@@ -156,7 +171,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
     return Message(message="update queue successfully")
 
 
-@router.delete("/{time_slot_id}", response_model=Message)
+@router.delete("/{time_slot_id}", response_model=Message, status_code=HTTP_200_OK)
 async def destroy_time_slot(
     site_id: str, time_slot_id: str, current_user: User = Depends(get_current_user)
 ):
@@ -176,17 +191,27 @@ async def destroy_time_slot(
     )
 
 
-@router.get("/walkin")
+@router.get("/walkin", status_code=status.HTTP_200_OK)
 async def read_walk_in(site_id: str):
     """
     ## Return a service site with its remaining capacity
     - **site_id**: a valid service provider site.
-    """
-    service_site = await read_one_site(site_id)
+    """    
+    try:
+        service_site = await read_one_site(site_id)
+    except bson.errors.InvalidId:
+        message = f"Service site id {site_id} is invalid"
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=message)
+
     count = 0
+    delta_time = 5
+    current_date = datetime.today().strftime(time_format)
+    date = datetime.strptime(current_date, time_format) + timedelta(days=delta_time)
+    date_string = date.strftime(time_format)
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
-        for reservation in time_slot["reservations"]:
-            count += 1
+        if time_slot["date"] == date_string:
+            for reservation in time_slot["reservations"]:
+                count += 1
     return {
         "response": {
             "service_site": service_site,

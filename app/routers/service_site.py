@@ -14,6 +14,7 @@ from app.database import (
 from app.models.basic_model import Message
 from app.models.service_site import Site, UpdateSite
 from app.models.user import User
+import bson
 
 router = APIRouter(tags=["service site"])
 
@@ -60,7 +61,11 @@ async def read_one_site(id: str):
 
     - **id** : service site id
     """
-    site = await retrieve_site(id)
+    try:
+        site = await retrieve_site(id)
+    except bson.errors.InvalidId:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
+
     if site:
         return Site(
             id=site["id"],
@@ -123,7 +128,10 @@ async def updated_site(
     - **location** : a new service site location
     """
     new_value = dict(**request.dict())
-    updated_site = await update_site(id, new_value)
+    try:
+        updated_site = await update_site(id, new_value)
+    except bson.errors.InvalidId:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
     if updated_site:
         return Message(message=f"update {id} success")
     raise HTTPException(
@@ -146,7 +154,10 @@ async def remove_site(id: str, current_user: User = Depends(get_current_user)):
 
     - **id** : an id of service site deleted
     """
-    deleted_site = await delete_site(id)
+    try:
+        deleted_site = await delete_site(id)
+    except bson.errors.InvalidId:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
     if deleted_site:
         return Message(message=f"delete site id {id} success")
     raise HTTPException(
