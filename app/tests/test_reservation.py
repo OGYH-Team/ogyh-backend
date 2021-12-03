@@ -18,7 +18,6 @@ class TestReservation(asynctest.TestCase):
             headers={"Authorization": "Bearer {}".format(self.access_token)},
         )
         url = "https://wcg-apis-test.herokuapp.com/reservation"
-        site_name = "OGYH"
         requests.delete(
             f"{url}/{citizen_id}",
             headers={"Authorization": "Bearer {}".format(self.access_token)},

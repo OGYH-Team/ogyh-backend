@@ -10,7 +10,7 @@ from app.routers.reservation import read_users_reservations
 from app.routers.service_site import read_one_site
 from app.models.basic_model import Message
 from bson.objectid import ObjectId
-from typing import Optional, List
+from typing import Optional
 import requests
 import bson
 

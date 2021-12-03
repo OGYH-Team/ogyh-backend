@@ -2,8 +2,6 @@ from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
 from app.utils.oauth2 import get_current_user
-from bson.objectid import ObjectId
-import bson
 import requests_mock
 import asynctest
 
