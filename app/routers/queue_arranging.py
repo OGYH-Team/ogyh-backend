@@ -94,7 +94,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
         {
             "service_site": service_site.name,
             "time_str": "10:00-10:30",
-            "date": date_string,
+            "date": (date + timedelta(days=delta_time)).strftime(time_format),
             "reservations": [],
         }
     )
@@ -108,7 +108,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
             break
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
             time_str_index += 1
-            queue = (date + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
+            queue = (date + timedelta(days=delta_time)+ timedelta(hours=10, minutes=30 * time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
             )
             if time_str_index == len(time_str):
@@ -126,6 +126,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
                 params=report,
                 headers={"Authorization": "Bearer {}".format(access_token)},
             )
+            # add a new time slot
             all_time_slots.append(
                 {
                     "service_site": service_site.name,
@@ -137,7 +138,7 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
             time_slot_index += 1
 
         else:
-            queue = (date + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
+            queue = (date + timedelta(days=delta_time) + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
                 "%Y-%m-%d %H:%M:%S.%f"
             )
             reservation.update({"queue": queue})
@@ -155,13 +156,12 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
         count_reservation += 1
     try:
         async for time_slot in db.time_slots.find({"service_site": service_site.name}):
-            if time_slot["date"] == date_string:
-                await db.time_slots.delete_many(
-                    {
-                        "service_site": service_site.name,
-                        "date": date_string,
-                    }
-                )
+
+            await db.time_slots.delete_many(
+                {
+                    "service_site": service_site.name,
+                }
+            )
         for time_slot in all_time_slots:
             await db.time_slots.insert_one(time_slot)
         if count_reservation > service_site.capacity:
