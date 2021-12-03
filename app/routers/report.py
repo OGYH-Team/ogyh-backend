@@ -12,7 +12,7 @@ async def send_report(request: CitizenToReport, site_id: str):
     """
     ## Create a queue report and send to government.
     - **site_id**: a valid service provider site.
-    - *citizen_ids*: a valid list of citizen id to report.
+    - **citizen_ids** : a valid list of citizen id to report.
     """
     res = requests.post(
         "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
@@ -42,8 +42,8 @@ async def send_report(request: CitizenToReport, site_id: str):
 async def send_vaccinated_report(request: CitizenToReport, site_id: str):
     """
     ## Create a vaccine report and send to government.
-    - **site_id**: a valid service provider site.
-    - *citizen_ids*: a valid list of citizen id to report.
+    - **site_id** : a valid service provider site.
+    - **citizen_ids** : a valid list of citizen id to report.
     """
     res = requests.post(
         "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")

@@ -19,10 +19,6 @@ tags_metadata = [
     {
         "name": "vaccine reservation",
         "description": "Vaccine reservation",
-        "externalDocs": {
-            "description": "docs",
-            "url": "https://wcg-apis.herokuapp.com/reservation_usage",
-        },
     },
     {"name": "authentication", "description": "jwt bearear token authentication"},
 ]
@@ -46,7 +42,7 @@ app.include_router(reservation.router, prefix="/api")
 app.include_router(service_site.router, prefix="/api")
 app.include_router(queue_arranging.router, prefix="/api")
 app.include_router(authentication.router)
-app.include_router(report.router)
+app.include_router(report.router, prefix="/api")
 
 
 @app.on_event("startup")
