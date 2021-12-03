@@ -6,6 +6,7 @@ import requests
 
 router = APIRouter(prefix="/site/{site_id}/queues", tags=["vaccine reservation"])
 
+
 @router.post("/report")
 async def send_report(request: CitizenToReport, site_id: str):
     """

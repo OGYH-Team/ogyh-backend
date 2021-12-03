@@ -8,6 +8,7 @@ def get_access_to_api():
     access_token = res.json()["access_token"]
     return access_token
 
+
 def fetch_url(URL, token=""):
     """Return a data that fetch from given url."""
     r = requests.get(URL, headers={"Authorization": "Bearer {}".format(token)})

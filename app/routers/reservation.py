@@ -6,7 +6,7 @@ from app.utils.utils import (
     arranging_reservation_by_site_name,
     fetch_url,
     get_service_site_avaliable,
-    get_access_to_api
+    get_access_to_api,
 )
 from app.utils.paginator import Paginator
 from app.database import retrieve_site

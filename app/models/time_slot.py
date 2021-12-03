@@ -13,8 +13,10 @@ class TimeSlot(BaseModel):
     class Config:
         extra = Extra.allow
 
+
 class TimeSlots(BaseModel):
     time_slots: List[TimeSlot]
+
 
 class CitizenToReport(BaseModel):
     citizen_ids: List

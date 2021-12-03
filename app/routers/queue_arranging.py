@@ -196,7 +196,7 @@ async def read_walk_in(site_id: str):
     """
     ## Return a service site with its remaining capacity
     - **site_id**: a valid service provider site.
-    """    
+    """
     try:
         service_site = await read_one_site(site_id)
     except bson.errors.InvalidId:
@@ -220,4 +220,3 @@ async def read_walk_in(site_id: str):
             else 0,
         }
     }
-    

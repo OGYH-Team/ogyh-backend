@@ -26,7 +26,11 @@ router = APIRouter(tags=["service site"])
     summary="Get every service sites",
     response_model=List[Site],
 )
-async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1, reserve: Optional[bool] = False):
+async def read_site_names(
+    limit: Optional[int] = None,
+    page: Optional[int] = 1,
+    reserve: Optional[bool] = False,
+):
     """
     ## Show service sites information:
 
@@ -43,9 +47,9 @@ async def read_site_names(limit: Optional[int] = None, page: Optional[int] = 1, 
                 try:
                     reservations = await read_users_reservations(site_ids[i])
                     if reservations:
-                        selected_sites.append(sites[i])   
+                        selected_sites.append(sites[i])
                 except:
-                    continue  
+                    continue
         else:
             selected_sites = sites
         site_paginator = Paginator(selected_sites)
@@ -77,7 +81,10 @@ async def read_one_site(id: str):
     try:
         site = await retrieve_site(id)
     except bson.errors.InvalidId:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
 
     if site:
         return Site(
@@ -144,7 +151,10 @@ async def updated_site(
     try:
         updated_site = await update_site(id, new_value)
     except bson.errors.InvalidId:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
     if updated_site:
         return Message(message=f"update {id} success")
     raise HTTPException(
@@ -170,7 +180,10 @@ async def remove_site(id: str, current_user: User = Depends(get_current_user)):
     try:
         deleted_site = await delete_site(id)
     except bson.errors.InvalidId:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Service site id {id} is invalid")   
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Service site id {id} is invalid",
+        )
     if deleted_site:
         return Message(message=f"delete site id {id} success")
     raise HTTPException(
