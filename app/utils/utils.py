@@ -1,6 +1,13 @@
 import requests
 
 
+def get_access_to_api():
+    res = requests.post(
+        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    return access_token
+
 def fetch_url(URL, token=""):
     """Return a data that fetch from given url."""
     r = requests.get(URL, headers={"Authorization": "Bearer {}".format(token)})

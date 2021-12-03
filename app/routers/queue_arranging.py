@@ -160,6 +160,11 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
 async def destroy_time_slot(
     site_id: str, time_slot_id: str, current_user: User = Depends(get_current_user)
 ):
+    """
+    ## Remove a vaccination time slot
+    - **site_id**: a valid service provider site.
+    - **time_slot_id**: a valid time slot id in the site_id.
+    """
     time_slot = db.time_slots.find_one({"_id": ObjectId(time_slot_id)})
     if time_slot:
         await db.time_slots.delete_one({"_id": ObjectId(time_slot_id)})
@@ -173,6 +178,10 @@ async def destroy_time_slot(
 
 @router.get("/walkin")
 async def read_walk_in(site_id: str):
+    """
+    ## Return a service site with its remaining capacity
+    - **site_id**: a valid service provider site.
+    """
     service_site = await read_one_site(site_id)
     count = 0
     async for time_slot in db.time_slots.find({"service_site": service_site.name}):
@@ -186,55 +195,4 @@ async def read_walk_in(site_id: str):
             else 0,
         }
     }
-
-
-@router.post("/report")
-async def send_report(request: CitizenToReport, site_id: str):
-    res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
-    )
-    access_token = res.json()["access_token"]
-    time_slots = await read_time_slots(site_id)
-    to_report_list = []
-    for time_slot in time_slots["time_slots"]:
-        for reservation in time_slot["reservations"]:
-            if reservation["citizen_id"] in request.citizen_ids:
-                to_report_list.append(reservation)
-    for reservation in to_report_list:
-        report = {
-            "citizen_id": reservation["citizen_id"],
-            "queue": reservation["queue"],
-        }
-        res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/queue_report",
-            params=report,
-            headers={"Authorization": "Bearer {}".format(access_token)},
-        )
-
-    return Message(message=f"report {len(to_report_list)} reservations success")
-
-
-@router.post("/report-taken")
-async def send_vaccinated_report(request: CitizenToReport, site_id: str):
-    res = requests.post(
-        "https://wcg-apis-test.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
-    )
-    access_token = res.json()["access_token"]
-    time_slots = await read_time_slots(site_id)
-    to_report_list = []
-    for time_slot in time_slots["time_slots"]:
-        for reservation in time_slot["reservations"]:
-            if reservation["citizen_id"] in request.citizen_ids:
-                to_report_list.append(reservation)
-    for reservation in to_report_list:
-        report = {
-            "citizen_id": reservation["citizen_id"],
-            "vaccine_name": reservation["vaccine_name"],
-            "option": "reserve",
-        }
-        res = requests.post(
-            "https://wcg-apis-test.herokuapp.com/report_taken",
-            params=report,
-            headers={"Authorization": "Bearer {}".format(access_token)},
-        )
-    return Message(message=f"report {len(to_report_list)} reservations success")
+    
