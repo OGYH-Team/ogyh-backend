@@ -31,3 +31,25 @@ jobs:
           dontautocreate: true
           docker_build_args: |
             MONGODB_URL=${{secrets.MONGODB_URL}}
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: Generate coverage report
+        run: |
+          pip install -r requirements.txt
+          coverage run -m unittest
+          coverage xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage/reports/
+          env_vars: OS, PYTHON
+          fail_ci_if_error: false
+          files: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          path_to_write_report: ./coverage/codecov_report.txt
+          verbose: true
