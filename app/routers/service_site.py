@@ -43,11 +43,13 @@ async def read_site_names(
     if sites:
         if reserve:
             selected_sites = []
+            selected_sites_name=[]
             for i in range(len(site_names)):
                 async for time_slot in db.time_slots.find({"service_site":site_names[i]}):
-                    if time_slot["service_site"] in selected_sites:
+                    if time_slot["service_site"] in selected_sites_name:
                         continue
                     selected_sites.append(sites[i])
+                    selected_sites_name.append(sites[i]["name"])
         else:
             selected_sites = sites
         site_paginator = Paginator(selected_sites)
