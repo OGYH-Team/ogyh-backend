@@ -1,8 +1,8 @@
 """Api router for service site."""
 from fastapi import APIRouter, HTTPException, status, Depends
 from typing import Optional, List
-from app.routers.reservation import read_users_reservations
 
+from app.database import db
 from app.utils.oauth2 import get_current_user
 from app.utils.paginator import Paginator
 from app.database import (
@@ -39,17 +39,15 @@ async def read_site_names(
 
     """
     sites = await retrive_sites()
-    site_ids = [site["id"] for site in sites]
+    site_names = [site["name"] for site in sites]
     if sites:
         if reserve:
             selected_sites = []
-            for i in range(len(site_ids)):
-                try:
-                    reservations = await read_users_reservations(site_ids[i])
-                    if reservations:
-                        selected_sites.append(sites[i])
-                except:
-                    continue
+            for i in range(len(site_names)):
+                async for time_slot in db.time_slots.find({"service_site":site_names[i]}):
+                    if time_slot["service_site"] in selected_sites:
+                        continue
+                    selected_sites.append(sites[i])
         else:
             selected_sites = sites
         site_paginator = Paginator(selected_sites)
