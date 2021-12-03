@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, status
 from fastapi.exceptions import HTTPException
-from starlette.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from starlette.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 from app.database import db
 from datetime import datetime, timedelta
 from app.models.user import User
-from app.models.time_slot import TimeSlots, CitizenToReport
+from app.models.time_slot import TimeSlots, CitizenToReport, Walkin
 from app.utils.oauth2 import get_current_user
 from app.routers.reservation import read_users_reservations
 from app.routers.service_site import read_one_site
@@ -108,9 +108,11 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
             break
         if len(all_time_slots[time_slot_index]["reservations"]) == time_slot_size:
             time_str_index += 1
-            queue = (date + timedelta(days=delta_time)+ timedelta(hours=10, minutes=30 * time_str_index)).strftime(
-                "%Y-%m-%d %H:%M:%S.%f"
-            )
+            queue = (
+                date
+                + timedelta(days=delta_time)
+                + timedelta(hours=10, minutes=30 * time_str_index)
+            ).strftime("%Y-%m-%d %H:%M:%S.%f")
             if time_str_index == len(time_str):
                 time_str_index = 0
                 delta_time += 1
@@ -138,9 +140,11 @@ async def update_queue(site_id: str, current_user: User = Depends(get_current_us
             time_slot_index += 1
 
         else:
-            queue = (date + timedelta(days=delta_time) + timedelta(hours=10, minutes=30 * time_str_index)).strftime(
-                "%Y-%m-%d %H:%M:%S.%f"
-            )
+            queue = (
+                date
+                + timedelta(days=delta_time)
+                + timedelta(hours=10, minutes=30 * time_str_index)
+            ).strftime("%Y-%m-%d %H:%M:%S.%f")
             reservation.update({"queue": queue})
             report = {
                 "citizen_id": reservation["citizen_id"],
@@ -261,7 +265,6 @@ async def send_report(
 async def send_vaccinated_report(
     request: CitizenToReport,
     site_id: str,
-    isWalkin: Optional[bool] = False,
     current_user: User = Depends(get_current_user),
 ):
     """
@@ -283,7 +286,7 @@ async def send_vaccinated_report(
         report = {
             "citizen_id": reservation["citizen_id"],
             "vaccine_name": reservation["vaccine_name"],
-            "option": "reserve" if not isWalkin else "walk-in",
+            "option": "reserve",
         }
         res = requests.post(
             "https://wcg-apis.herokuapp.com/report_taken",
@@ -291,3 +294,26 @@ async def send_vaccinated_report(
             headers={"Authorization": "Bearer {}".format(access_token)},
         )
     return Message(message=f"report {len(to_report_list)} reservations success")
+
+
+@router.post("/walkin-report", status_code=HTTP_201_CREATED)
+async def send_walkin_report(
+    site_id: str,
+    walk_in_info: Walkin,
+    current_user: User = Depends(get_current_user),
+):
+    res = requests.post(
+        "https://wcg-apis.herokuapp.com/login", auth=("Chayapol", "Kp6192649")
+    )
+    access_token = res.json()["access_token"]
+    report = {
+        "citizen_id": walk_in_info.citizen_id,
+        "vaccine_name": walk_in_info.vaccine_name,
+        "option": "walk-in",
+    }
+    res = requests.post(
+        "https://wcg-apis.herokuapp.com/report_taken",
+        params=report,
+        headers={"Authorization": "Bearer {}".format(access_token)},
+    )
+    return Message(message=f"report success")

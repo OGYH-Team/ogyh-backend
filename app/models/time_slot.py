@@ -20,3 +20,8 @@ class TimeSlots(BaseModel):
 
 class CitizenToReport(BaseModel):
     citizen_ids: List
+
+
+class Walkin(BaseModel):
+    citizen_id: str
+    vaccine_name: str

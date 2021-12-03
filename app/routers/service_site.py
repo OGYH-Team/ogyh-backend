@@ -43,9 +43,11 @@ async def read_site_names(
     if sites:
         if reserve:
             selected_sites = []
-            selected_sites_name=[]
+            selected_sites_name = []
             for i in range(len(site_names)):
-                async for time_slot in db.time_slots.find({"service_site":site_names[i]}):
+                async for time_slot in db.time_slots.find(
+                    {"service_site": site_names[i]}
+                ):
                     if time_slot["service_site"] in selected_sites_name:
                         continue
                     selected_sites.append(sites[i])
