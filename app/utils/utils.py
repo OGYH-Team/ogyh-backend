@@ -30,17 +30,6 @@ def arranging_reservation_by_site_name(DATA):
     return reservations
 
 
-def get_cancellation(DATA, citizen_id):
-    """Return the user if the citizen id is existed, otherwise return None."""
-    for item in DATA.values():
-        for user in item:
-            cancel_id = user["citizen_id"]
-            if cancel_id == citizen_id:
-                user["queue"] = ""
-                return user
-    return None
-
-
 def get_service_site_avaliable(data: dict, key: str):
     for i in data:
         if key == i:

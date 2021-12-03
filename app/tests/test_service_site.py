@@ -1,3 +1,4 @@
+from starlette import responses
 from ..main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
@@ -21,7 +22,7 @@ class TestServiceSite(asynctest.TestCase):
         self.auth_url = "/login"
         self.valid_user = {"username": "Tester", "password": "tester123"}
         self.valid_service_site = {
-            "name": "สถานีกลางบางซื่อ",
+            "name": "TEST",
             "location": {
                 "formatted_address": "336 ซอยกำแพงเพชร 2 ถนนเทอดดำริ แขวงจตุจักร เขตจตุจักร กรุงเทพมหานคร",
                 "country": "ไทย",
@@ -124,4 +125,28 @@ class TestServiceSite(asynctest.TestCase):
         """Test remove valid service site using 1 character as its id."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
             response = await ac.delete(f"{self.base_url}/site/1")
+            self.assertEqual(404, response.status_code)
+
+    async def test_get_sites_that_has_reservations(self):
+        """Test get valid service site that has reservations."""
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.get(f"{self.base_url}/sites", params={"reserve": True})
+            self.assertEqual(200, response.status_code)
+
+    async def test_get_site_with_invalid_id(self):
+        """Test get a service site using its id which is 24 characters."""
+        invalid_site_id = "619f7c3289c2942b7d28f5e0"
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.get(f"{self.base_url}/site/{invalid_site_id}")
+            self.assertEqual(404, response.status_code)
+
+    async def test_update_site_with_invalid_id(self):
+        """Test update a service site using its id which is 24 characters."""
+        invalid_site_id = "619f7c3289c2942b7d28f5e0"
+        updated_value = self.valid_service_site
+        updated_value.update({"name": "TEST"})
+        async with AsyncClient(app=app, base_url="http://test") as ac:
+            response = await ac.put(
+                f"{self.base_url}/site/{invalid_site_id}", json=updated_value
+            )
             self.assertEqual(404, response.status_code)
