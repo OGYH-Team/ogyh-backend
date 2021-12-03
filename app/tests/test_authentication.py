@@ -1,6 +1,7 @@
 from app.main import app
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
+import requests_mock
 import asynctest
 from unittest.case import skip
 
@@ -34,7 +35,8 @@ class TestAuthentication(asynctest.TestCase):
             del self.valid_user["username"]
             responses = await ac.post(f"{self.base_url}", data=self.valid_user)
         self.assertEqual(422, responses.status_code)
-        self.assertEqual(responses.json()["detail"][0]["loc"], ["body", "username"])
+        self.assertEqual(responses.json()["detail"][0]["loc"], [
+                         "body", "username"])
 
     async def test_login_missing_password(self):
         """Test login without password."""
@@ -42,7 +44,8 @@ class TestAuthentication(asynctest.TestCase):
             del self.valid_user["password"]
             responses = await ac.post(f"{self.base_url}", data=self.valid_user)
         self.assertEqual(422, responses.status_code)
-        self.assertEqual(responses.json()["detail"][0]["loc"], ["body", "password"])
+        self.assertEqual(responses.json()["detail"][0]["loc"], [
+                         "body", "password"])
 
     async def test_login_with_invalid_user(self):
         """Test login the invalid user."""
@@ -53,31 +56,28 @@ class TestAuthentication(asynctest.TestCase):
 
     async def test_add_service_site(self):
         """Test valid user add the service site to database."""
+        valid_service_site = {
+                    "name": "TEST2",
+                    "location": {
+                        "formatted_address": "336 ซอยกำแพงเพชร 2 ถนนเทอดดำริ แขวงจตุจักร เขตจตุจักร กรุงเทพมหานคร",
+                        "country": "ไทย",
+                        "postal": "10900",
+                        "route": "เทอดดำริ",
+                        "city": "กรุงเทพมหานคร",
+                        "coordinates": {"latitude": 13.80375, "longitude": 100.54225},
+                    },
+                    "capacity": 20000,
+                }
         async with AsyncClient(app=app, base_url="http://test") as ac:
             login_responses = await ac.post(f"{self.base_url}", data=self.valid_user)
-            create_site_response = await ac.post(f"/api/site", json=
-                {
-                    "name": "TestCreateSite",
-                    "location": {
-                        "formatted_address": "TestAddress",
-                        "country": "ไทย",
-                        "postal": "10200",
-                        "route": "พหลโยธิน",
-                        "city": "กรุงเทพมหานคร",
-                        "coordinates": {
-                        "latitude": 10,
-                        "longitude": 10
-                        }
-                    },
-                    "capacity": 0
-                },
-                headers={"Authorization": "Bearer {}".format(login_responses.json()["access_token"])}
-            )
-        self.assertEqual(201, create_site_response.status_code)
-        self.assertEqual("TestCreateSite", create_site_response.json()["name"])
+            access_token = login_responses.json()["access_token"]
+            with requests_mock.Mocker() as rm:
+                rm.post(f"/api/site", json=valid_service_site)
+                response = await ac.post("/api/site", json=valid_service_site, headers={"Authorization": "Bearer {}".format(access_token)})
+                self.assertEqual(201, response.status_code)
 
 
-    @skip("Not complete")
+    @ skip("Not complete")
     async def test_read_user_when_login(self):
         """Test get current user while login."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
@@ -86,7 +86,7 @@ class TestAuthentication(asynctest.TestCase):
         self.assertEqual(200, responses.status_code)
         self.assertEqual("", responses.text)
 
-    @skip("Not complete")
+    @ skip("Not complete")
     async def test_read_user_without_login(self):
         """Test get current user witout login."""
         async with AsyncClient(app=app, base_url="http://test") as ac:
