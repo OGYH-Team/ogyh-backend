@@ -82,17 +82,16 @@ class TestReservation(asynctest.TestCase):
         page = {
             "limit": -5,
             "page": 1,
-        }  # the negative would be convert to 0 automatically
+        }  # the negative would be convert to 1 automatically
         async with AsyncClient(app=app, base_url="http://test") as ac:
             responses = await ac.get(
                 f"{self.base_url}/site/{self.site_id}/reservations",
                 params=page,
                 headers={"Authorization": "Bearer {}".format(self.access_token)},
             )
-            print(responses.json())
             self.assertEqual(200, responses.status_code)
             content = responses.json()["response"]
-            self.assertEqual(content["reservations"], [])
+            self.assertEqual(len(content["reservations"]), 1)
 
     async def test_get_reservation(self):
         """Test retrive a specific reservation by giving citizen_id."""
